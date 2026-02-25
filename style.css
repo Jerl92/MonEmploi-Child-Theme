@@ -1,0 +1,52 @@
+/*
+Theme Name:MonEmploi.net
+Description: MonEmploi.net
+Template: chichi
+Version: 1.0
+Author: Jérémie Langevin 
+Author URI: https://GitHub.com/Jerl92 
+Text Domain: Jobs
+*/
+
+.monemploi_add_job_text {
+	width: 100%;
+	display: flex;
+}
+
+#top-menu-container {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 1);
+	height: 30px;
+	overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+	overflow-y: hidden; /* Hide vertical scrollbar */
+	white-space: nowrap; /* Prevents list items from wrapping to the next line */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+#top-menu-container ul {
+	display: flex; /* Arranges list items in a single row */
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	justify-content: none;
+}
+
+#top-menu-container li {
+	flex-shrink: 0; 
+	padding: 2px 5px;
+}
+
+#top-menu-container li a {
+	color: #fff;
+}
+
+#top-menu-container li:hover {
+	background-color: #65bf21;
+}
+
+@media (min-width: 720px) {
+	#top-menu-container ul {
+		justify-content: flex-end;
+	}
+}
