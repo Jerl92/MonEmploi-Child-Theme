@@ -17,7 +17,7 @@
 			<div class="entry-meta">
 			
 				<div class="" style="position: relative;">
-					<h3><?php echo get_the_title(); ?></h3>
+					<h2 style="font-weight: 900;"><?php echo get_the_title(); ?></h2>
 					<div class="" style="position: absolute; right: 0; top: 5px; display: flex;">
                         <?php $current_user = wp_get_current_user(); ?>
 		                <?php $user_meta = get_userdata($current_user->ID); ?>
@@ -30,7 +30,9 @@
 							</div>
 						</div>
 						<?php } elseif ( get_post_status () === 'draft' ) { ?>
-							<button class="job-draft-to-publish" data-object-id="<?php the_ID(); ?>">Publier</button>
+							<div class="job-draft-to-publish" data-object-id="<?php the_ID(); ?>">
+								<span class="material-icons">publish</span>
+							</div>
 						</div>
 						<?php } ?>
 						<div class="delete-job-emplois" data-object-id="<?php the_ID(); ?>">
@@ -45,8 +47,40 @@
 			<?php } ?>
 	
 		</header><!-- .entry-header -->
+		
+		<?php $start_job_scheduled = get_post_meta( get_the_ID(), 'my_start_job_scheduled_key', true); ?>
+		<?php $end_job_scheduled = get_post_meta( get_the_ID(), 'my_end_job_scheduled_key', true); ?>
+		
+		<?php $publish_start_date = date('Y-m-d H:i:s', $start_job_scheduled); ?>
+		<?php $publish_end_date = date('Y-m-d H:i:s', $end_job_scheduled); ?>
+			
+		<?php $strtotime_now = date('Y-m-d H:i:s', current_time('timestamp'));  ?>
+				
+		<div class="entry-meta-scheduled-info">
+	    			
+	    		<?php if ($start_job_scheduled != '' && $end_job_scheduled != ''){ ?>
+	    			<p style="font-weight: 900; ">Début et fin de l&#39;annonce</p>
+    			<?php } ?>
+    			
+    			<?php if ($start_job_scheduled != ''){ ?>
+	    			<span>Date et heure du début de l&#39;annonce</span>
+	    			<br>
+	    			<?php echo get_the_date('Y-m-d H:i:s'); ?>
+	    			<br>
+    			<?php } ?>
+    			   
+    			<?php if ($end_job_scheduled != ''){ ?>
+	    			<span>Date et heure de la fin de l&#39;annonce</span>
+	    			<br>
+	    			<?php echo $publish_end_date ?>
+	    			<br>
+    			<?php } ?>
+		
+		</div>
 	
 		<div class="entry-meta-employer-info" style="padding-bottom:15px;">
+		
+		    <p style="font-weight: 900; ">Coordonner de l&#39;employeur</p>
 		
 		    <?php $user_id = get_post_field ('post_author', get_the_ID());
 		    $get_user_by_username = get_user_by('id', $user_id);
@@ -81,6 +115,8 @@
 		
 		<div class="entry-meta-job-adresse" style="padding-bottom:15px;">
 		
+			<p style="font-weight: 900;">Adresse de l&#39;emploi</p>
+		
 			<?php echo get_post_meta( get_the_ID(), 'my_code_postal_key', true ); ?>
 			
 			<?php $usermetadata = get_user_meta(get_current_user_id());
@@ -102,9 +138,13 @@
 		
 		<div class="entry-meta" style="padding-bottom:15px;">
 		
+			<p style="font-weight: 900;">Description de l&#39;emploi</p>
+		
 			<?php the_content(); ?>
 		
 		</div>
+		
+		<p style="font-weight: 600;">Postulé sur l&#39;emploi</p>
 		
 		<?php $userid = get_current_user_id();
 		$current_user = wp_get_current_user();
@@ -143,17 +183,20 @@
 	    
 		<?php
 		
+		echo '<p style="font-weight: 600;">Salaire horaire</p>';
 		echo '<div class="entry-meta-education" style="padding-bottom:15px;">';
 		    	$salaire = get_post_meta( get_the_ID(), 'my_salaire_key', true );
 			echo $salaire . '$ de lheure';
 		echo '</div>';	
 		
+		echo '<p style="font-weight: 600;">Niveaux d&#39;éducation</p>';
 		echo '<div class="entry-meta-education" style="padding-bottom:15px;">';
 			$education_id = get_post_meta( get_the_ID(), 'my_education_key', true );
 			$term = get_term( $education_id );
 			echo $term->name;
 		echo '</div>';
 		
+		echo '<p style="font-weight: 600;">Année d&#39;experiance</p>';
 	    	echo '<div class="entry-meta-annees_dexperience" style="padding-bottom:15px;">';
 		    	$annees_dexperience = get_post_meta( get_the_ID(), 'my_annees_dexperience_key', true );	
 		    	
