@@ -207,21 +207,23 @@
 		
 		echo '</div>';
 				
-		echo '<div class="candidacy-responses" style="padding-bottom: 15px;">';
+		$args = array(
+			'post_id'   	=> get_the_ID(),
+			'post_type' 	=> 'candidacy',
+			'status'    	=> 'approve',
+			'order'     	=> 'ASC'
+		);
+		$response_array = get_comments( $args );
 		
-			$args = array(
-			        'post_id'   	=> get_the_ID(),
-			        'post_type' 	=> 'candidacy',
-			        'status'    	=> 'approve',
-			        'order'     	=> 'ASC'
-			    );
-			    $response_array = get_comments( $args );
-			   			    
+		echo '<div id="test-comment"></div>';
+				
+		echo '<div class="candidacy-responses" style="padding-bottom: 15px;">';
+				   			    
 			    	$counter = 0;
 				
 				echo '<h3><span class="">'. __('Réponses', 'monemploi') .'</span></h3>';
 	
-				echo '<div class="candidacy-response-cards">';
+				echo '<div class="candidacy-response-cards" data-object-id="' . get_the_ID() . '">';
 
 				if( $response_array ) {	
 	
