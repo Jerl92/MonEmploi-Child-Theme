@@ -70,7 +70,7 @@
 			<?php 
 			echo '<h3><span class="">'. __('Adresse du poste', 'monemploi') .'</span></h3>';
 		
-			echo get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true );
+			echo '<span id="job-adress">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';
 			echo ' - '; 
 			$usermetadata = get_user_meta($user_id);
 			$field_data = $usermetadata['Code_postal']; 
@@ -79,7 +79,35 @@
 				echo '<span class="autocompleteDeparture_0" style="display: none;">'. implode($field_data) . '</span>';
 				echo '<span class="autocompleteArrival_0" style="display: none;">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';
 				echo '<span class="distance_0"></span>'; 
-			echo '</span>';
+			echo '</span>';					
+		?></div><?php
+		
+		?><div class="entry-meta" style="padding-bottom: 15px;"><?php
+		
+			echo '<h3><span class="">'. __('Itineraire', 'monemploi') .'</span></h3>';
+		
+			um_fetch_user( get_current_user_id() );
+			echo '<span id="user-adress" style="display: none;">' . um_user('Adresse') . ' ' . um_user('Code_postal') . '</span>';
+			um_reset_user();
+			$travelMode = $_GET['travelMode'];
+			echo '<br>';
+			echo '<button><a href="?travelMode=voiture">Voiture</a></button>';
+			echo '<button><a href="?travelMode=autobus">Autobus</a></button>';
+            if($travelMode == 'autobus') {
+                echo '<div class="departuredate" style="display: none;">' . date("Y-m-d") . '</div>';
+				echo '<input type="time" class="departuretime">';
+			}
+			if($travelMode == null) {
+				echo '<span>Voiture</span>';
+			}
+			if($travelMode == 'voiture') {
+				echo '<span>Voiture</span>';
+			}
+			if($travelMode == 'autobus') {
+				echo '<span>Autobus</span>';
+			}
+			echo '<br>';
+			echo '<div id="map" style="width: 100%; height: 520px;"></div>';
 		?></div><?php
 		
 		echo '<div class="entry-meta" style="padding-bottom: 15px;">';
@@ -147,7 +175,7 @@
 				$current_user = wp_get_current_user();
 				$user_meta = get_userdata($current_user->ID);
 				$user_role = $user_meta->roles[0];
-				if($user_role == 'um_employeur'){
+				if($user_role == 'employeur'){
 				
 				if($get_status == null || $get_status == 0){
 					echo '<select name="status_'. $i .'" id="status_'. $i .'" data-object-id="' . get_the_ID() . '">';
@@ -214,8 +242,6 @@
 			'order'     	=> 'ASC'
 		);
 		$response_array = get_comments( $args );
-		
-		echo '<div id="test-comment"></div>';
 				
 		echo '<div class="candidacy-responses" style="padding-bottom: 15px;">';
 				   			    
@@ -242,7 +268,7 @@
 												<?php $user_meta = get_userdata($userid); ?>
 												<?php $user_role = $user_meta->roles[0]; ?>
 												<?php um_fetch_user( $userid ); ?>
-												<?php if($user_role == 'um_employeur'){ ?>
+												<?php if($user_role == 'employeur'){ ?>
 													<a href="<?php get_site_url(); ?>/employeur/?user=<?php echo $user_meta->user_login ?>"><?php echo $response->comment_author; ?></a> - <?php echo um_user('name_org'); ?>
 													<?php um_reset_user(); ?>
 												<?php } elseif($user_role == 'employer'){ ?>
@@ -278,7 +304,7 @@
 			
 				<?php $get_status = get_post_meta(get_the_ID(), 'candidacy_status_', true);
 				
-				if($get_status == 2 || $get_status == 3 || $user_role == 'um_employeur') { ?>
+				if($get_status == 2 || $get_status == 3 || $user_role == 'employeur') { ?>
 			                <div class="ns-cards ns-feedback">
 			                    <div class="ns-feedback-form">
 			

@@ -27,32 +27,4 @@ function my_custom_menus() {
 }
 add_action( 'init', 'my_custom_menus' );
 
-function my_custom_after_registration_action( $user_id, $args ) {
-    if ( empty( $user_id ) || is_wp_error( $user_id ) ) {
-        return;
-    }
-    
-    // Check if the specific radio button field value exists in the submitted data
-    $user = new WP_User( $user_id );
-	$meta_for_user = get_user_meta( $user_id, 'Status', true ); 
-	$meta_user_status = $meta_for_user[0];
-	$statuts_value = sanitize_text_field( $meta_user_status );
-	if($meta_user_status == 'Employeur'){    
-		$user->set_role( 'um_employeur' );
-	}
-	if($meta_user_status == 'Employer'){ 
-		$user->set_role( 'employer' );
-	}
-}
-add_action( 'um_registration_set_extra_data', 'my_custom_after_registration_action', 10, 2 );
-
-add_filter( 'login_url', 'um_custom_login_url', 10, 3 );
-function um_custom_login_url( $login_url, $redirect, $force_reauth ) {
-    return um_get_core_page( 'login' );
-}
-
-function auto_approve_all_comments( $approved, $commentdata ) {
-    return 1;
-}
-add_filter( 'pre_comment_approved', 'auto_approve_all_comments', 99, 2 );
-
+?>
