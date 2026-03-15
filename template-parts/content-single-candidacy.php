@@ -72,7 +72,7 @@
 		
 			echo '<span id="job-adress">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';
 			echo ' - '; 
-			$usermetadata = get_user_meta($user_id);
+			$usermetadata = get_user_meta($author_id);
 			$field_data = $usermetadata['Code_postal']; 
 					 
 			echo '<span class="autocompleteDeparture">';
