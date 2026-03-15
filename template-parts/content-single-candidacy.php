@@ -86,7 +86,7 @@
 		
 			echo '<h3><span class="">'. __('Itineraire', 'monemploi') .'</span></h3>';
 		
-			um_fetch_user( get_current_user_id() );
+			um_fetch_user( $author_id );
 			echo '<span id="user-adress" style="display: none;">' . um_user('Adresse') . ' ' . um_user('Code_postal') . '</span>';
 			um_reset_user();
 			$travelMode = $_GET['travelMode'];
