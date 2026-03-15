@@ -22,7 +22,7 @@
                         <?php $current_user = wp_get_current_user(); ?>
 		                <?php $user_meta = get_userdata($current_user->ID); ?>
 		                <?php $user_role = $user_meta->roles[0]; ?>
-		                <?php if($user_role == 'um_employeur'){ ?>
+		                <?php if($user_role == 'employeur'){ ?>
 						<div class="draft-or-publish">
 						<?php if ( get_post_status () === 'publish' ) { ?>
 							<div class="draft-job-emplois" data-object-id="<?php the_ID(); ?>">
@@ -205,15 +205,92 @@
 			} elseif($annees_dexperience == 2){
 				echo '1 an';
 			} elseif($annees_dexperience == 3){
-				echo '4-5 ans';
-			} elseif($annees_dexperience == 4){
 				echo '2-3 ans';
+			} elseif($annees_dexperience == 4){
+				echo '4-5 ans';
 			} elseif($annees_dexperience == 5){
 				echo '6-9 ans';
 			} elseif($annees_dexperience == 6){
 				echo '10 ans+';
 			}
 		echo '</div>';
+		
+		echo '<p style="font-weight: 600;">Nombre d&#8216;heures par semaine</p>';
+		echo '<div class="entry-meta-nombre-dheures" style="padding-bottom:15px;">';
+		    	$nombre_dheures = get_post_meta( get_the_ID(), 'my_add_heures_key', true );
+		    	echo $nombre_dheures . 'h par semaine';	
+		echo '</div>';
+		
+		echo '<p style="font-weight: 600;">Type d&#8216;emploi</p>';
+		echo '<div class="entry-meta-type-demploi" style="padding-bottom:15px;">';
+		    	$type_demploi = get_post_meta( get_the_ID(), 'my_type_demploi_key', true );
+		    	if($type_demploi == 1){
+		    		echo 'Temps plein';
+		    	}elseif($type_demploi == 2){
+		    		echo 'Temps partiel';
+		    	}
+		echo '</div>';
+		
+		echo '<p style="font-weight: 600;">Type d&#8216;horaire</p>';
+		echo '<div class="entry-meta-type-dhoraire" style="padding-bottom:15px;">';
+		    	$type_dhoraire = get_post_meta( get_the_ID(), 'my_type_dhoraire_key', true );
+		    	if($type_dhoraire == 1){
+		    		echo 'Jour';
+		    	}elseif($type_dhoraire == 2){
+		    		echo 'Soire';
+		    	}elseif($type_dhoraire == 3){
+		    		echo 'Nuit';
+		    	}
+		echo '</div>';
+		
+		echo '<p style="font-weight: 600;">Type de disponibilités</p>';
+		echo '<div class="entry-meta-type-disponibilites" style="padding-bottom:15px;">';
+		    	$disponibilites1 = get_post_meta( get_the_ID(), 'my_disponibilites1_key', true );
+		    	$disponibilites2 = get_post_meta( get_the_ID(), 'my_disponibilites2_key', true );
+		    	if($disponibilites1 == 1){
+		    		echo 'Semaine';
+		    		echo '<br>';
+		    	}
+		    	if($disponibilites2 == 1){
+		    		echo 'Fin de semaine';
+		    	}
+		echo '</div>';
+		
+		
+		echo '<p style="font-weight: 600;">Durée de l&#8216;emploi</p>';
+		echo '<div class="entry-meta-type-dhoraire" style="padding-bottom:15px;">';
+		    	$duree_emploi = get_post_meta( get_the_ID(), 'my_duree_emploi_key', true );
+		    	if($duree_emploi == 1){
+		    		echo 'Permanent';
+		    	}elseif($duree_emploi == 2){
+		    		echo 'Contrat';
+		    	}elseif($duree_emploi == 3){
+		    		echo 'Sur appel';
+		    	}
+		echo '</div>';
+		
+		
+		echo '<p style="font-weight: 600;">Besoin d&#8216;un permis de conduire</p>';
+		echo '<div class="entry-meta-type-dhoraire" style="padding-bottom:15px;">';
+		    	$permis_conduire = get_post_meta( get_the_ID(), 'my_permis_conduire_key', true );
+		    	if($permis_conduire == 1){
+		    		echo 'Non';
+		    	}elseif($permis_conduire == 2){
+		    		echo 'Oui';
+		    	}
+		echo '</div>';
+		
+		
+		echo '<p style="font-weight: 600;">Besoin d&#8216;une voiture</p>';
+		echo '<div class="entry-meta-type-dhoraire" style="padding-bottom:15px;">';
+		    	$besoin_voiture = get_post_meta( get_the_ID(), 'my_besoin_voiture_key', true );
+		    	if($besoin_voiture == 1){
+		    		echo 'Non';
+		    	}elseif($besoin_voiture == 2){
+		    		echo 'Oui';
+		    	}
+		echo '</div>';
+		
 	echo '</div>';
 
 ?>
