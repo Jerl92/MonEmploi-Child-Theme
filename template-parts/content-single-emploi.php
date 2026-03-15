@@ -17,8 +17,8 @@
 			<div class="entry-meta">
 			
 				<div class="" style="position: relative;">
-					<h2 style="font-weight: 900;" style="width: auto%;"><?php echo get_the_title(); ?></h2>
-					<div class="" style="position: absolute; right: 0; top: 5px; display: flex; width: auto%;">
+					<h2 style="font-weight: 900;" style="width: auto;"><?php echo get_the_title(); ?></h2>
+					<div class="" style="position: absolute; right: 0; top: 5px; display: flex; width: auto;">
                         <?php $current_user = wp_get_current_user(); ?>
 		                <?php $user_meta = get_userdata($current_user->ID); ?>
 		                <?php $user_role = $user_meta->roles[0]; ?>
