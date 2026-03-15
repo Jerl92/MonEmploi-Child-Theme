@@ -191,10 +191,18 @@
 	    
 		<?php
 		
-		echo '<p style="font-weight: 600;">Salaire horaire</p>';
+		echo '<p style="font-weight: 600;">Salaire</p>';
 		echo '<div class="entry-meta-education" style="padding-bottom:15px;">';
 		    	$salaire = get_post_meta( get_the_ID(), 'my_salaire_key', true );
-			echo $salaire . '$ de lheure';
+		    	$nombre_dheures = get_post_meta( get_the_ID(), 'my_add_heures_key', true );
+			echo $salaire . '$ de l&#39;heure.';
+			echo '<br>';
+			echo $nombre_dheures * $salaire . '$ par semaine.';
+			echo '<br>';
+			echo ($nombre_dheures * $salaire) * 2 . '$ par 2 semaines.';
+			echo '<br>';
+			echo ($nombre_dheures * $salaire) * 52 . '$ par année.';
+			
 		echo '</div>';	
 		
 		echo '<p style="font-weight: 600;">Niveaux d&#39;éducation</p>';
