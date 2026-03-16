@@ -60,19 +60,19 @@
 				
 		<div class="entry-meta-scheduled-info">
 	    			
-	    		<?php if ($start_job_scheduled != '' && $end_job_scheduled != ''){ ?>
+	    		<?php if (get_the_date('Y-m-d H:i:s') != '' || $end_job_scheduled != ''){ ?>
 	    			<p style="font-weight: 900; ">Début et fin de l&#39;annonce</p>
     			<?php } ?>
     			
-    			<?php if ($start_job_scheduled != ''){ ?>
-	    			<span>Date et heure du début de l&#39;annonce</span>
+    			<?php if (get_the_date('Y-m-d H:i:s') != ''){ ?>
+	    			<span>Date et heure du début</span>
 	    			<br>
 	    			<?php echo get_the_date('Y-m-d H:i:s'); ?>
 	    			<br>
     			<?php } ?>
     			   
     			<?php if ($end_job_scheduled != ''){ ?>
-	    			<span>Date et heure de la fin de l&#39;annonce</span>
+	    			<span>Date et heure de la fin</span>
 	    			<br>
 	    			<?php echo $publish_end_date ?>
 	    			<br>
@@ -80,7 +80,7 @@
     			
     			<?php $getmodifieddate = get_the_modified_date('Y-m-d H:i:s'); ?>
     			<?php if($getmodifieddate != ''){ ?>
-	    			<span>Date et heure de la derniere modification de l&#39;annonce</span>
+	    			<span>Date et heure de la derniere modification</span>
 	    			<br>
 		    		<?php echo get_the_modified_date('Y-m-d H:i:s'); ?>
 		    		<br>
