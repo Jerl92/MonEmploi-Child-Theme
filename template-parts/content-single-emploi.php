@@ -19,22 +19,24 @@
 				<div class="" style="position: relative;">
 					<h2 style="font-weight: 900;" style="width: auto;"><?php echo get_the_title(); ?></h2>
 					<div class="" style="position: absolute; right: 0; top: 5px; display: flex; width: auto;">
-                        <?php $current_user = wp_get_current_user(); ?>
-		                <?php $user_meta = get_userdata($current_user->ID); ?>
-		                <?php $user_role = $user_meta->roles[0]; ?>
-		                <?php if($user_role == 'employeur'){ ?>
-                            <div class="edit-job-emplois">
-                                <a href="<?php echo get_site_url(); ?>/ajouter-un-emploi/?postid=<?php the_ID(); ?>"><span class="material-icons">edit</span></a>
-							</div>
-						<?php if ( get_post_status () === 'publish' ) { ?>
-							<div class="draft-job-emplois" data-object-id="<?php the_ID(); ?>">
-								<span class="material-icons">archive</span>
-							</div>
-						<?php } elseif ( get_post_status () === 'draft' ) { ?>
-							<div class="job-draft-to-publish" data-object-id="<?php the_ID(); ?>">
-								<span class="material-icons">publish</span>
-							</div>
-						<?php } ?>
+		                        <?php $current_user = wp_get_current_user(); ?>
+			                <?php $user_meta = get_userdata($current_user->ID); ?>
+			                <?php $user_role = $user_meta->roles[0]; ?>
+			                <?php if($user_role == 'employeur'){ ?>
+                           			 <div class="edit-job-emplois">
+                                			<a href="<?php echo get_site_url(); ?>/ajouter-un-emploi/?postid=<?php the_ID(); ?>"><span class="material-icons">edit</span></a>
+						</div>
+						<div class="draft-or-publish">
+							<?php if ( get_post_status () === 'publish' ) { ?>
+								<div class="draft-job-emplois" data-object-id="<?php the_ID(); ?>">
+									<span class="material-icons">archive</span>
+								</div>
+							<?php } elseif ( get_post_status () === 'draft' ) { ?>
+								<div class="job-draft-to-publish" data-object-id="<?php the_ID(); ?>">
+									<span class="material-icons">publish</span>
+								</div>
+							<?php } ?>
+						</div>
 						<div class="delete-job-emplois" data-object-id="<?php the_ID(); ?>">
 							<span class="material-icons">delete</span>
 						</div>
