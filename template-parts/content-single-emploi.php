@@ -249,6 +249,18 @@
 		    	}
 		echo '</div>';
 		
+		echo '<p style="font-weight: 600;">Type d&#8216;activité professionnelle</p>';
+		echo '<div class="entry-meta-type-demploi" style="padding-bottom:15px;">';
+		    	$activite_professionnelle = get_post_meta( get_the_ID(), 'my_activite_professionnelle_key', true );
+		    	if($activite_professionnelle == 1){
+		    		echo 'Travail en présentiel';
+		    	}elseif($activite_professionnelle == 2){
+		    		echo 'Télétravail';
+		    	} elseif ($activite_professionnelle == 3){
+		    		echo 'Mode hybride';
+		    	}
+		echo '</div>';
+		
 		echo '<p style="font-weight: 600;">Type d&#8216;horaire</p>';
 		echo '<div class="entry-meta-type-dhoraire" style="padding-bottom:15px;">';
 		    	$type_dhoraire = get_post_meta( get_the_ID(), 'my_type_dhoraire_key', true );
