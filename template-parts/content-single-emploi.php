@@ -275,14 +275,15 @@
 		
 		echo '<p style="font-weight: 600;">Type de disponibilités</p>';
 		echo '<div class="entry-meta-type-disponibilites" style="padding-bottom:15px;">';
-		    	$disponibilites1 = get_post_meta( get_the_ID(), 'my_disponibilites1_key', true );
-		    	$disponibilites2 = get_post_meta( get_the_ID(), 'my_disponibilites2_key', true );
-		    	if($disponibilites1 == 1){
-		    		echo 'Semaine';
-		    		echo '<br>';
-		    	}
-		    	if($disponibilites2 == 1){
-		    		echo 'Fin de semaine';
+		    	$disponibilites = get_post_meta( get_the_ID(), 'my_disponibilites_key', true );
+		    	foreach ( $disponibilites as $key => $values ) {
+			    	if($key == 'week' && $values == 1){
+			    		echo 'Semaine';
+			    		echo '<br>';
+			    	}
+			    	if($key == 'weekend' && $values == 1){
+			    		echo 'Fin de semaine';
+			    	}
 		    	}
 		echo '</div>';
 		
