@@ -273,6 +273,20 @@
 				echo 'Non';
 			}
 			
+			$superieur_nom = get_post_meta( get_the_ID(), 'my_superieur_nom_key', true );
+			$superieur_email = get_post_meta( get_the_ID(), 'my_superieur_email_key', true );
+			$superieur_numero = get_post_meta( get_the_ID(), 'my_superieur_numero_key', true );
+			$superieur_poste = get_post_meta( get_the_ID(), 'my_superieur_poste_key', true );
+			if($deja_travaille == 1){
+				echo '<p style="font-weight: 400;">Information du supérieur</p>';
+				echo 'Nom: ' . $superieur_nom . ' - ';
+				echo 'Email: ' . $superieur_email . ' - ';
+				echo 'Numero: ' . $superieur_numero . ' - ';
+				if($superieur_poste != ''){
+					echo 'Poste: ' . $superieur_poste;
+				}
+			}
+			
 			echo '<h3><span class="">'. __('Équité en emploi', 'monemploi') .'</span></h3>';
 			
 		       	$sexe = get_post_meta( get_the_ID(), 'my_sexe_key', true );
@@ -330,6 +344,15 @@
 					echo '<p style="font-weight: 400;">Si vous avez un handicap, expliquer le</p>';
 					echo $handicap_;
 				}
+			}
+			
+			echo '<h3><span class="">'. __('J&#8216;accepte la déclaration de confidentialité', 'monemploi') .'</span></h3>';
+			
+			$confidentialite = get_post_meta( get_the_ID(), 'my_confidentialite_key', true );
+			if($confidentialite == 1){
+				echo 'Oui';
+			} elseif ($confidentialite == 0){
+				echo 'Non';
 			}
 		
 		echo '</div>';

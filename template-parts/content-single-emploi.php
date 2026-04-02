@@ -499,9 +499,17 @@
 						
 						echo '<br />';
 						
-						echo '<h3>Équité en emploi</h3>';
+						echo '<div class="superieur-info" style="display: none;">';
+							echo '<p style="font-weight: 600;">Si oui, entrer les informations de votre supérieur</p>';
+							echo '<input type="text" name="superieur_nom" class="superieur_nom" id="superieur_nom" placeholder="Nom de votre supérieur">';
+							echo '<input type="email" name="superieur_email" class="superieur_email" id="superieur_email" placeholder="Email de votre supérieur">';
+							echo '<input type="tel" name="superieur_numero" class="superieur_numero" id="superieur_numero" placeholder="Numero de votre supérieur">';
+							echo '<input type="text" name="superieur_poste" class="superieur_poste" id="superieur_poste" placeholder="Poste de votre supérieur">';
+						echo '</div>';
 						
 						echo '<br />';
+						
+						echo '<h3>Équité en emploi</h3>';
 						
 						echo '<p style="font-weight: 600;">Sexe à la naissance</p>';
 						echo '<select name="sexe" class="sexe" id="sexe">';
@@ -592,6 +600,22 @@
 						echo '<textarea id="lettre_reference" name="lettre_presentation" class="lettre_presentation" rows="5" cols="30">';
 						echo '</textarea>';
 						echo '<br />';
+						
+						echo '<h3>Déclaration de confidentialité</h3>';
+						echo '<p>Je, soussigné(e) que MonEmploi.net, agissant à titre de d&#8216;intermédiaire, m&#8216;engage à :</p>';
+						echo '<p>Respecter la confidentialité des renseignements personnels et de toute information confidentielle auxquels j&#8216;ai accès dans le cadre de mes fonctions.</p>';
+						echo '<p>Ne pas divulguer, utiliser, copier ou diffuser ces informations à quiconque, sauf autorisation expresse ou obligation légale.</p>';
+						echo '<p>Assurer la sécurité des documents en ma possession et les détruire de manière sécuritaire lorsque nécessaire.</p>';
+						echo '<p>Remettre tous les documents confidentiels à l&#8216;organisation tout au long du processus.</p>';
+						echo '<p>Je comprends que le non-respect de cet engagement peut entraîner des poursuites judiciaires ou des sanctions disciplinaires.</p>';
+						echo '<br />';
+						
+						echo '<div class="confidentialite-checkbox">';
+							echo '<input type="checkbox" id="confidentialite" class="confidentialite" name="confidentialite">';
+							echo '<label for="confidentialite"> - J&#8216;accepte la déclaration de confidentialité</label>';
+						echo '</div>';
+						echo '<br />';						
+						
 						echo '<button class="submit_cv" data-object-id="' . get_the_ID() . '">Soumettre</button>';
 						
 					echo '</div>';
