@@ -6,6 +6,10 @@
  *
  * @package chichi
  */
+ 
+ if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 ?>
 

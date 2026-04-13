@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /* Enqueue parent stylesheet */
 function deothemes_chichi_child_enqueue_styles() {
     wp_enqueue_style( 'deothemes-child-chichi-style', get_template_directory_uri() . '/style.css' );
