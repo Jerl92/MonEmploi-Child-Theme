@@ -71,3 +71,28 @@ Text Domain: Jobs
 		justify-content: flex-end;
 	}
 }
+
+@media (max-width: 720px) {
+
+.wrap {
+    max-width: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#primary  {
+    max-width: 100%;
+    width: 98%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+#secondary   {
+    max-width: 100%;
+    width: 98%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+}
