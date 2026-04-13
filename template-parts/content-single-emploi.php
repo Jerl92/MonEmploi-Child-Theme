@@ -576,7 +576,6 @@
 						
 						if ( $attachments ) {
 						    echo '<h3>Vos documents</h3>';
-						    echo '<ul class="cv-table-wrapper">';
 						    
 						    foreach ( $attachments as $attachment ) {
 						        // Get the URL of the media file
@@ -584,16 +583,14 @@
 						        // Get the title
 						        $file_title = apply_filters( 'the_title', $attachment->post_title );
 						
-						        echo '<li>';
+						        echo '<div>';
 						        
 						        	echo '<input type="checkbox" id="cv" name="cv" class="cv" value="' . $attachment->ID . '">';
 						        	echo ' - ';
 						        	echo '<a href="' . esc_url( $file_url ) . '">' . esc_html( $file_title ) . '</a>';
 						        
-						        echo '</li>';
+						        echo '</div>';
 						    }
-						
-						    echo '</ul>';
 						}
 						
 						echo '<h3>Votre lettre de présentation</h3>';
