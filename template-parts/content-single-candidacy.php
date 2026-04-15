@@ -17,7 +17,7 @@
 	$author_id_key = get_post_meta( get_the_ID(), 'my_author_id_key', true );
 	$author_id = get_the_author_meta( 'ID' ); 
 	$author_obj = get_user_by('id', $author_id);
-	if (  $author_id == get_current_user_id() || $author_id_key == get_current_user_id() ) {
+	if (  $author_id == get_current_user_id() || $author_id_key == get_current_user_id() ) {	
 	?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -34,6 +34,14 @@
 	
 		</header><!-- .entry-header -->
 		
+		<?php
+		
+		if (isset($_GET['add_comment'])) {
+		        echo "<h3>Le commentaire #". $_GET['add_comment'] ." à été ajouter.</h3>";
+		}
+		
+		?>
+		
 		<div class="entry-meta-employeur-info" style="padding-bottom:15px;">
 		
 		    <?php 
@@ -41,32 +49,37 @@
 		    
 		    $user_id = get_post_field ('post_author', get_post_meta(get_the_ID(), 'my_postid_key', true));
 		    $get_user_by_username = get_user_by('id', $user_id);
-	
-		    um_fetch_user( $user_id );
-		    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
+		    
+    		echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
 		    echo ' - ';
-		    echo um_user('name_org');
-		    echo ' - ';
-	 	    echo um_user('first_name');
-	 	    echo ' ';
-		    echo um_user('last_name');
-		    echo ' - ';
-	 	    echo um_user('user_email');
-		    echo '<br>';
-		    echo um_user('Adresse');
-		    echo ' - ';
-		    echo um_user('Province');
-		    echo ' - ';
-		    echo um_user('Pays');
-		    echo ' - ';
-		    echo um_user('Code_postal');
-		    echo ' - ';
-		    echo um_user('number_phone');
-		    if(!um_user('poste') == ''){
+		    echo $get_user_by_username->user_firstname;
+		    echo ' ';
+		    echo $get_user_by_username->user_lastname;
+		    if(get_user_meta($user_id, 'company_key', true) != ''){
 			    echo ' - ';
-			    echo um_user('poste');
+			    echo get_user_meta($user_id, 'company_key', true);
+		    }	
+		    echo '<br>';
+		    echo get_user_meta($user_id, 'adresse_key', true);
+		    echo ' - ';
+		    echo get_user_meta($user_id, 'city_key', true);
+		    echo ' - ';
+		    echo get_user_meta($user_id, 'province_key', true);
+		    echo ' - ';
+		    echo get_user_meta($user_id, 'country_key', true);
+		    echo ' - ';
+		    echo get_user_meta($user_id, 'postal_code_key', true);
+		    echo '<br>';
+		    echo get_user_meta($user_id, 'phone_key', true);
+		    if(get_user_meta($user_id, 'poste_key', true) != ''){
+		    	echo ' - ';
+		    	echo get_user_meta($user_id, 'poste_key', true);
 		    }
-		    um_reset_user(); ?>
+		    echo ' - ';
+		    echo $get_user_by_username->user_email;	    
+		    echo '<br>';
+		    
+		    ?>
 		    
 		</div> 
 			
@@ -383,7 +396,7 @@
 				   			    
 			    	$counter = 0;
 				
-				echo '<h3><span class="">'. __('Réponses', 'monemploi') .'</span></h3>';
+				echo '<h3><span class="candidacy-response-header">'. __('Réponses', 'monemploi') .'</span></h3>';
 	
 				echo '<div class="candidacy-response-cards" data-object-id="' . get_the_ID() . '">';
 
@@ -441,20 +454,23 @@
 				<?php $get_status = get_post_meta(get_the_ID(), 'candidacy_status_', true);
 				
 				if($get_status == 2 || $get_status == 3 || $user_role == 'employeur') { ?>
+				    <form action=" <?php $_SERVER['REQUEST_URI'] ?>" method="post">
 			                <div class="ns-cards ns-feedback">
 			                    <div class="ns-feedback-form">
 			
 			                        <div class="ns-form-group">
-			                            <textarea name="ns_response_msg" id="write-message" class="ns-form-control" placeholder="<?php esc_attr_e('Écrivez votre réponse...', 'monemploi'); ?>" rows="6" aria-label="<?php esc_attr_e('
-Écrivez votre réponse...', 'monemploi'); ?>"><?php echo isset($_POST['ns_response_msg']) ? $_POST['ns_response_msg'] : ''; ?></textarea>
+			                            <textarea name="ns_response_msg" id="write-message" class="ns-form-control" placeholder="<?php esc_attr_e('Écrivez votre réponse...', 'monemploi'); ?>" rows="6"></textarea>
 			                        </div> <!-- /.ns-form-group -->
 		
-			                        <button id="submit_response" data-object-id="<?php echo get_the_ID(); ?>">
+			                        <button id="submit_response" type="submit" name="submit">
+			                        	<input type="hidden" name="action" value="submit_response" />
+							<input type="hidden" name="postid" value="<?php echo get_the_ID(); ?>" />
 			                            <?php esc_html_e('Soumettre', 'monemploi'); ?>
 			                        </button>
 			
 			                    </div>
 			                </div> <!-- /.ns-feedback-form -->
+			           </form>
 				<?php } else { ?>
 					<div class="ns-cards ns-feedback">
 			                    <div class="ns-feedback-form">

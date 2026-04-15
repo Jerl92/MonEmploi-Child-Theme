@@ -19,6 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<header class="entry-header">
 				<?php if ( is_single() ) { ?>
 				
+				<?php if ($_GET['new_job'] == true) { ?>
+					<h2>Votre emploi à été ajouté avec succès.</h2>
+				<?php } ?>
+				
+				<?php if ($_GET['update_job'] == true) { ?>
+					<h2>Votre emploi à été mis à jour avec succès.</h2>
+				<?php } ?>
+				
 				<div class="entry-meta">
 				
 					<div class="" style="position: relative;">
@@ -313,15 +321,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			
 			echo '<p style="font-weight: 600;">Type de disponibilités</p>';
 			echo '<div class="entry-meta-type-disponibilites" style="padding-bottom:15px;">';
-			    	$disponibilites = get_post_meta( get_the_ID(), 'my_disponibilites_key', true );
-			    	foreach ( $disponibilites as $key => $values ) {
-				    	if($key == 'week' && $values == 1){
-				    		echo 'Semaine';
-				    		echo '<br>';
-				    	}
-				    	if($key == 'weekend' && $values == 1){
-				    		echo 'Fin de semaine';
-				    	}
+			    	$disponibilites1 = get_post_meta( get_the_ID(), 'my_disponibilites1_key', true );
+			    	$disponibilites2 = get_post_meta( get_the_ID(), 'my_disponibilites2_key', true );
+			    	if($disponibilites1 == 1){
+			    		echo 'Semaine';
+			    		echo '<br>';
+			    	}
+			    	if($disponibilites2 == 1){
+			    		echo 'Fin de semaine';
 			    	}
 			echo '</div>';
 			
