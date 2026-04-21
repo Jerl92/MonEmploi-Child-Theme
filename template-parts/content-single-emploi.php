@@ -108,32 +108,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 			    <?php $user_id = get_post_field ('post_author', get_the_ID());
 			    $get_user_by_username = get_user_by('id', $user_id);
 		
-			    um_fetch_user( $user_id );
-			    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
+	    		    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
 			    echo ' - ';
-			    echo um_user('name_org');
-			    echo ' - ';
-		 	    echo um_user('first_name');
-		 	    echo ' ';
-			    echo um_user('last_name');
-			    echo ' - ';
-		 	    echo um_user('user_email');
-			    echo '<br>';
-			    echo um_user('Adresse');
-			    echo ' - ';
-			    echo um_user('Province');
-			    echo ' - ';
-			    echo um_user('Pays');
-			    echo ' - ';
-			    echo um_user('Code_postal');
-			    echo ' - ';
-			    echo um_user('number_phone');
-			    if(!um_user('poste') == ''){
+			    echo $get_user_by_username->user_firstname;
+			    echo ' ';
+			    echo $get_user_by_username->user_lastname;
+			    if(get_user_meta($user_id, 'company_key', true) != ''){
 				    echo ' - ';
-				    echo um_user('poste');
+				    echo get_user_meta($user_id, 'company_key', true);
+			    }	
+			    echo '<br>';
+			    echo get_user_meta($user_id, 'adresse_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'city_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'province_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'country_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'postal_code_key', true);
+			    echo '<br>';
+			    echo get_user_meta($user_id, 'phone_key', true);
+			    if(get_user_meta($user_id, 'poste_key', true) != ''){
+			    	echo ' - ';
+			    	echo get_user_meta($user_id, 'poste_key', true);
 			    }
-			    um_reset_user(); ?>
-			    
+			    echo ' - ';
+			    echo $get_user_by_username->user_email;	    
+			    echo '<br>';
+			    ?>
 			</div> 
 			
 			<div class="entry-meta-job-adresse" style="padding-bottom:15px;">
@@ -412,31 +415,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 				    <?php $user_id = get_post_field ('post_author', get_the_ID());
 				    $get_user_by_username = get_user_by('id', $user_id);
 			
-				    um_fetch_user( $user_id );
-				    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
+		    		    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
 				    echo ' - ';
-				    echo um_user('name_org');
-				    echo ' - ';
-			 	    echo um_user('first_name');
-			 	    echo ' ';
-				    echo um_user('last_name');
-				    echo ' - ';
-			 	    echo um_user('user_email');
-				    echo '<br>';
-				    echo um_user('Adresse');
-				    echo ' - ';
-				    echo um_user('Province');
-				    echo ' - ';
-				    echo um_user('Pays');
-				    echo ' - ';
-				    echo um_user('Code_postal');
-				    echo ' - ';
-				    echo um_user('number_phone');
-				    if(!um_user('poste') == ''){
+				    echo $get_user_by_username->user_firstname;
+				    echo ' ';
+				    echo $get_user_by_username->user_lastname;
+				    if(get_user_meta($user_id, 'company_key', true) != ''){
 					    echo ' - ';
-					    echo um_user('poste');
+					    echo get_user_meta($user_id, 'company_key', true);
+				    }	
+				    echo '<br>';
+				    echo get_user_meta($user_id, 'adresse_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'city_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'province_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'country_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'postal_code_key', true);
+				    echo '<br>';
+				    echo get_user_meta($user_id, 'phone_key', true);
+				    if(get_user_meta($user_id, 'poste_key', true) != ''){
+				    	echo ' - ';
+				    	echo get_user_meta($user_id, 'poste_key', true);
 				    }
-				    um_reset_user(); ?>
+				    echo ' - ';
+				    echo $get_user_by_username->user_email;	    
+				    echo '<br>';
+				    ?>
 				    
 				</div> 
 				
@@ -584,9 +591,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						
 						// Get the attachments
 						$attachments = get_posts( $args );
-						
+					    
+                        			echo '<h3>Vos documents</h3>';
 						if ( $attachments ) {
-						    echo '<h3>Vos documents</h3>';
 						    
 						    foreach ( $attachments as $attachment ) {
 						        // Get the URL of the media file
@@ -602,6 +609,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						        
 						        echo '</div>';
 						    }
+						} else {
+						    echo '<p>Vous devez avoir un document ou plus dans votre section curiculum vital</p>';
 						}
 						
 						echo '<h3>Votre lettre de présentation</h3>';
@@ -622,7 +631,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							echo '<input type="checkbox" id="confidentialite" class="confidentialite" name="confidentialite">';
 							echo '<label for="confidentialite"> - J&#8216;accepte la déclaration de confidentialité</label>';
 						echo '</div>';
-						echo '<br />';						
+						echo '<br />';
 						
 						echo '<button class="submit_cv" data-object-id="' . get_the_ID() . '">Soumettre</button>';
 						

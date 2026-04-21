@@ -416,13 +416,10 @@
 												<?php $userid = $response->user_id; ?>
 												<?php $user_meta = get_userdata($userid); ?>
 												<?php $user_role = $user_meta->roles[0]; ?>
-												<?php um_fetch_user( $userid ); ?>
 												<?php if($user_role == 'employeur'){ ?>
-													<a href="<?php get_site_url(); ?>/employeur/?user=<?php echo $user_meta->user_login ?>"><?php echo $response->comment_author; ?></a> - <?php echo um_user('name_org'); ?>
-													<?php um_reset_user(); ?>
+													<a href="<?php get_site_url(); ?>/employeur/?user=<?php echo $user_meta->user_login ?>"><?php echo $response->comment_author; ?></a> - <?php echo get_user_meta($user_meta->ID, 'company_key', true); ?>
 												<?php } elseif($user_role == 'employer'){ ?>
-													<a href="<?php get_site_url(); ?>/employee/?user=<?php echo $user_meta->user_login ?>"><?php echo $response->comment_author; ?></a> - <?php echo um_user('name_org'); ?>
-													<?php um_reset_user(); ?>
+													<a href="<?php get_site_url(); ?>/employee/?user=<?php echo $user_meta->user_login ?>"><?php echo $response->comment_author; ?></a> - <?php echo get_user_meta($user_meta->ID, 'company_key', true); ?>
 												<?php } ?>
 											</h3>
 											<?php if (intval($response->user_id) == intval(get_current_user_id())){ ?>
