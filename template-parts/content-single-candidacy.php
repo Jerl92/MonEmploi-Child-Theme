@@ -25,8 +25,8 @@
 			<?php if ( is_single() ) { ?>
 			
 			<div class="entry-meta">
-				
-				<h2><?php echo '<a href="' . get_permalink( get_post_meta(get_the_ID(), 'my_postid_key', true) ) . '">' . get_the_title() . '</a>'; ?></h2>
+				<?php $my_postid = get_post_meta(get_the_ID(), 'my_postid_key', true); ?>
+				<h2><?php echo '<a href="' . get_permalink( $my_postid ) . '">' . get_the_title() . '</a>'; ?></h2>
 				
 			</div>
 					
@@ -50,7 +50,7 @@
 		    $user_id = get_post_field ('post_author', get_post_meta(get_the_ID(), 'my_postid_key', true));
 		    $get_user_by_username = get_user_by('id', $user_id);
 		    
-    		echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
+    		    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
 		    echo ' - ';
 		    echo $get_user_by_username->user_firstname;
 		    echo ' ';
@@ -103,9 +103,7 @@
 		
 			echo '<h3><span class="">'. __('Itineraire', 'monemploi') .'</span></h3>';
 		
-			um_fetch_user( $author_id );
-			echo '<span id="user-adress" style="display: none;">' . um_user('Adresse') . ' ' . um_user('Code_postal') . '</span>';
-			um_reset_user();
+			echo '<span id="user-adress" style="display: none;">' . get_user_meta($author_id, 'adresse_key', true) . ' ' . get_user_meta($author_id, 'postal_code_key', true) . '</span>';
 			$travelMode = $_GET['travelMode'];
 			echo '<br>';
 			echo '<button><a href="?travelMode=voiture">Voiture</a></button>';
@@ -155,16 +153,8 @@
 			echo '<div style="width: 100%; style="padding-bottom: 15px;">';
 			
 			echo '<h3><span class="">'. __('Adresse & Profile', 'monemploi') .'</span></h3>';
-			
-			 if ( function_exists( 'um_user_profile_url' ) ) {
-			    $user_id = $author_obj->ID;
-			    um_fetch_user( $user_id );
-			    $profile_url = um_user_profile_url();
-			    echo '<a href="' .  $profile_url . '">Adresse</a>';
-			    echo ' - ';
-			    echo '<a href="'. get_site_url() .'/profile/?user='. $author_obj->user_nicename .'">Profile</a>';
-			    um_reset_user();
-			}
+			$user_id = $author_obj->ID;
+			echo '<a href="'. get_site_url() .'/employee/?user='. $author_obj->user_nicename .'">' . $author_obj->user_nicename . '</a>';
 			echo '</div>';
 			echo '<div style="width: 100%; style="padding-bottom: 15px;">';
 			
@@ -471,7 +461,7 @@
 				<?php } else { ?>
 					<div class="ns-cards ns-feedback">
 			                    <div class="ns-feedback-form">
-			                    	<p>Vous ne pouvez pas commenter cette candidature.</p>
+			                    	<p>Vous ne pouvez pas répondre cette candidature.</p>
 			                    </div>
 			                </div> <!-- /.ns-feedback-form -->
 				<?php } ?>
