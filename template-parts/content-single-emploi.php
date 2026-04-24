@@ -113,9 +113,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			    echo $get_user_by_username->user_firstname;
 			    echo ' ';
 			    echo $get_user_by_username->user_lastname;
-			    if(get_user_meta($user_id, 'company_key', true) != ''){
+			    if(get_post_meta( get_the_ID(), 'company_key', true ) != ''){
 				    echo ' - ';
-				    echo get_user_meta($user_id, 'company_key', true);
+				    echo get_post_meta( get_the_ID(), 'company_key', true );
 			    }	
 			    echo '<br>';
 			    echo get_user_meta($user_id, 'adresse_key', true);

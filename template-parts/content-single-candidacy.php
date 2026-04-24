@@ -40,12 +40,16 @@
 		        echo "<h3>Le commentaire #". $_GET['add_comment'] ." à été ajouter.</h3>";
 		}
 		
+		if (isset($_GET['delete_comment'])) {
+		        echo "<h3>Le commentaire #". $_GET['delete_comment'] ." à été supprimé.</h3>";
+		}
+		
 		?>
 		
 		<div class="entry-meta-employeur-info" style="padding-bottom:15px;">
 		
 		    <?php 
-		    echo '<h3><span class="">'. __('Coordonnées de lemployeur', 'monemploi') .'</span></h3>';
+		    echo '<h3><span class="">'. __('Coordonnées de l&#8216;employeur', 'monemploi') .'</span></h3>';
 		    
 		    $user_id = get_post_field ('post_author', get_post_meta(get_the_ID(), 'my_postid_key', true));
 		    $get_user_by_username = get_user_by('id', $user_id);
@@ -402,7 +406,7 @@
 								<div class="ns-row">
 									<div class="ns-col-sm-9">
 										<div class="response-head" style="display: flex;">
-											<h3 class="ticket-head" id="response-<?php echo esc_attr($counter); ?>" style="width: calc(100% - 25px);">
+											<h3 class="ticket-head" id="response-<?php echo esc_attr($counter); ?>" style="width: calc(100% - 75px);">
 												<?php $userid = $response->user_id; ?>
 												<?php $user_meta = get_userdata($userid); ?>
 												<?php $user_role = $user_meta->roles[0]; ?>
@@ -413,9 +417,16 @@
 												<?php } ?>
 											</h3>
 											<?php if (intval($response->user_id) == intval(get_current_user_id())){ ?>
-											<div class="delete-comment-candidacy" style="width: 25px; padding-top: 25px;" data-object-id="<?php echo $response->comment_ID; ?>" data-object-string="<?php echo $ramdonstring; ?>">												<i class="material-icons">
-													delete
-												</i>
+											<div class="delete-comment-candidacy" style="width: 75px; margin-left: auto; margin-right: auto;">
+												<form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
+										                        <input type="hidden" name="commentid" value="<?php echo $response->comment_ID; ?>" />
+										                        <input type="hidden" name="action" value="delete_comment_candidacy" />
+										                        <button type="submit" name="submit" style="padding: 0; margin: 0;">
+										                        	<i class="material-icons">
+										            				delete
+										            			</i>
+										            		</button>
+									            		</form>
 											</div>
 											<?php } ?>
 										</div> <!-- /.response-head -->
@@ -446,7 +457,7 @@
 			                    <div class="ns-feedback-form">
 			
 			                        <div class="ns-form-group">
-			                            <textarea name="ns_response_msg" id="write-message" class="ns-form-control" placeholder="<?php esc_attr_e('Écrivez votre réponse...', 'monemploi'); ?>" rows="6"></textarea>
+			                            <textarea name="ns_response_msg" id="write-message" class="ns-form-control" placeholder="<?php esc_attr_e('Écrivez votre réponse...', 'monemploi'); ?>" rows="6" required></textarea>
 			                        </div> <!-- /.ns-form-group -->
 		
 			                        <button id="submit_response" type="submit" name="submit">
