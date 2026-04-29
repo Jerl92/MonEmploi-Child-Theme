@@ -512,6 +512,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						
 						echo '<br />';
 						
+						echo '<div class="test1"></div>';
+						
 						echo '<div class="superieur-info" style="display: none;">';
 							echo '<p style="font-weight: 600;">Si oui, entrer les informations de votre supérieur</p>';
 							echo '<input type="text" name="superieur_nom" class="superieur_nom" id="superieur_nom" placeholder="Nom de votre supérieur">';

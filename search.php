@@ -34,40 +34,43 @@ get_header(); ?>
 			    ],
 			] );
 			foreach ($users as $user) {
-			
-				$user_id = $user->ID; // Replace with the desired user ID
-				$user_info = get_userdata($user_id);
-			        $user_roles = $user_info->roles;
-			        if(implode($user_roles) == 'employeur'){
-				    $company_key = get_user_meta($user->ID, 'company_key', true);
-				    echo '<a href="'. get_site_url() .'/employeur/?user='. $user->user_nicename .'">'. $user->user_nicename .'</a>';
-				    echo ' - ';
-			 	    echo $user->user_firstname;
-			 	    echo ' ';
-				    echo $user->user_lastname;
-				    if($company_key != ''){
+				$hide_search = get_user_meta( $user->ID, 'hide_search_key', true);
+				if($hide_search == 0 || $hide_search == ''){
+					$user_id = $user->ID; // Replace with the desired user ID
+					$user_info = get_userdata($user_id);
+				        $user_roles = $user_info->roles;
+				        if(implode($user_roles) == 'employeur'){
+					    $company_key = get_user_meta($user->ID, 'company_key', true);
+					    echo '<a href="'. get_site_url() .'/employeur/?user='. $user->user_nicename .'">'. $user->user_nicename .'</a>';
 					    echo ' - ';
-					    echo $company_key;
-				    }
-				    echo ' - ';
-				    echo get_user_meta($user->ID, 'city_key', true);
-				    echo '<br>';
-				}
+				 	    echo $user->user_firstname;
+				 	    echo ' ';
+					    echo $user->user_lastname;
+					    if($company_key != ''){
+						    echo ' - ';
+						    echo $company_key;
+					    }
+					    echo ' - ';
+					    echo get_user_meta($user->ID, 'city_key', true);
+					    echo '<br>';
+					}
+					
+					if(implode($user_roles) == 'employer'){
+					    $company_key = get_user_meta($user->ID, 'company_key', true);
+					    echo '<a href="'. get_site_url() .'/employee/?user='. $user->user_nicename .'">'. $user->user_nicename .'</a>';
+					    echo ' - ';
+				 	    echo $user->user_firstname;
+				 	    echo ' ';
+					    echo $user->user_lastname;
+					    if($company_key != ''){
+						    echo ' - ';
+						    echo $company_key;
+					    }
+					    echo ' - ';
+					    echo get_user_meta($user->ID, 'city_key', true);
+					    echo '<br>';
+					}
 				
-				if(implode($user_roles) == 'employer'){
-				    $company_key = get_user_meta($user->ID, 'company_key', true);
-				    echo '<a href="'. get_site_url() .'/employee/?user='. $user->user_nicename .'">'. $user->user_nicename .'</a>';
-				    echo ' - ';
-			 	    echo $user->user_firstname;
-			 	    echo ' ';
-				    echo $user->user_lastname;
-				    if($company_key != ''){
-					    echo ' - ';
-					    echo $company_key;
-				    }
-				    echo ' - ';
-				    echo get_user_meta($user->ID, 'city_key', true);
-				    echo '<br>';
 				}
 			 
 			}	
