@@ -118,24 +118,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 				    echo get_post_meta( get_the_ID(), 'company_key', true );
 			    }	
 			    echo '<br>';
-			    echo get_user_meta($user_id, 'adresse_key', true);
-			    echo ' - ';
-			    echo get_user_meta($user_id, 'city_key', true);
-			    echo ' - ';
-			    echo get_user_meta($user_id, 'province_key', true);
-			    echo ' - ';
-			    echo get_user_meta($user_id, 'country_key', true);
-			    echo ' - ';
-			    echo get_user_meta($user_id, 'postal_code_key', true);
-			    echo '<br>';
-			    echo get_user_meta($user_id, 'phone_key', true);
-			    if(get_user_meta($user_id, 'poste_key', true) != ''){
-			    	echo ' - ';
-			    	echo get_user_meta($user_id, 'poste_key', true);
+			    $hide_adresse_job = get_user_meta( $user_id, 'hide_adresse_job_key', true);
+			    if($hide_adresse_job == 0 || $hide_adresse_job == ''){
+				    echo get_user_meta($user_id, 'adresse_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'city_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'province_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'country_key', true);
+				    echo ' - ';
+				    echo get_user_meta($user_id, 'postal_code_key', true);
+				    echo '<br>';
 			    }
-			    echo ' - ';
-			    echo $get_user_by_username->user_email;	    
-			    echo '<br>';
+			    $hide_contact_job = get_user_meta( $user_id, 'hide_contact_job_key', true);
+			    if($hide_contact_job == 0 || $hide_contact_job == ''){
+				    echo get_user_meta($user_id, 'phone_key', true);
+				    if(get_user_meta($user_id, 'poste_key', true) != ''){
+				    	echo ' - ';
+				    	echo get_user_meta($user_id, 'poste_key', true);
+				    }
+				    echo ' - ';
+				    echo $get_user_by_username->user_email;	    
+				    echo '<br>';
+			    }
 			    ?>
 			</div> 
 			
@@ -202,40 +208,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$current_user = wp_get_current_user();
 			$user_meta = get_userdata($current_user->ID);
 			$user_role = $user_meta->roles[0];
+			$email_employeur = get_post_meta( get_the_ID(), 'my_email_employeur_key', true );
+			$lien_employeur = get_post_meta( get_the_ID(), 'my_lien_employeur_key', true );
 			$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
 			$current_url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			if($user_role == 'employer'){ ?>
-				<?php if($allready_candidacy == 0){ ?>
-					<div class="entry-meta-apply" style="padding-bottom:15px;">
-						<button id="ns_submit" name="ns_submit" class="ns-btn ns-btn-primary ns-btn-ticket" style="padding-top: 15px;" data-object-id="<?php the_ID(); ?>">
-							<a href="<?php echo $current_url ?>?apply=true"><?php esc_html_e( 'Postuler', 'monemploi' ); ?></a>
-						</button>
-							
-					</div>
-				<?php } else { ?>
-					<p><?php esc_html_e( 'Vous avez deja postulé sur cette emploi.', 'monemploi' ); ?></p>
+			if($user_role == 'employer'){ 
+				if($email_employeur == '' && $lien_employeur == ''){ ?>		
+					<?php if($allready_candidacy == 0){ ?>
+						<div class="entry-meta-apply" style="padding-bottom:15px;">
+							<button id="ns_submit" name="ns_submit" class="ns-btn ns-btn-primary ns-btn-ticket" style="padding-top: 15px;" data-object-id="<?php the_ID(); ?>">
+								<a href="<?php echo $current_url ?>?apply=true"><?php esc_html_e( 'Postuler', 'monemploi' ); ?></a>
+							</button>
+								
+						</div>
+					<?php } else { ?>
+						<p><?php esc_html_e( 'Vous avez deja postulé sur cette emploi.', 'monemploi' ); ?></p>
+					<?php } ?>
 				<?php } ?>
 			<?php } ?>
+			<?php 		if($email_employeur != ''){
+						echo $email_employeur;
+						echo '<br>';
+					}
+					if($lien_employeur != ''){
+						echo $lien_employeur;
+						echo '<br>';
+					}
+			?>
+
 			
 			<div class="entry-meta-allready" style="padding-bottom:15px;"><?php
 			
-				$get_candidacys_args = array( 
-					'post_type' => 'candidacy',
-					'post_status'    => 'publish',
-					'posts_per_page' => -1,
-					'meta_key' => 'my_postid_key',
-					'meta_value' => get_the_ID(),
-					'orderby'        => 'date',
-					'order' => 'DESC'
-				);
-			
-				$get_candidacys = get_posts( $get_candidacys_args );
+				if($email_employeur == '' && $lien_employeur == ''){
+					$get_candidacys_args = array( 
+						'post_type' => 'candidacy',
+						'post_status'    => 'publish',
+						'posts_per_page' => -1,
+						'meta_key' => 'my_postid_key',
+						'meta_value' => get_the_ID(),
+						'orderby'        => 'date',
+						'order' => 'DESC'
+					);
 				
-				echo count($get_candidacys);
-				if(count($get_candidacys) > 2){ 
-					echo ' candidas qui ont postuler';
-				} else { 
-					echo ' candida qui ont postuler';
+					$get_candidacys = get_posts( $get_candidacys_args );
+					
+					echo count($get_candidacys);
+					if(count($get_candidacys) > 2){ 
+						echo ' candidas qui ont postuler';
+					} else { 
+						echo ' candida qui ont postuler';
+					}
 				}
 						
 			?></div>
@@ -414,7 +436,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				
 				    <?php $user_id = get_post_field ('post_author', get_the_ID());
 				    $get_user_by_username = get_user_by('id', $user_id);
-			
+				    
 		    		    echo '<a href="'. get_site_url() .'/employeur/?user='.  $get_user_by_username->user_nicename .'">' . $get_user_by_username->user_nicename . '</a>';
 				    echo ' - ';
 				    echo $get_user_by_username->user_firstname;
@@ -425,24 +447,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 					    echo get_user_meta($user_id, 'company_key', true);
 				    }	
 				    echo '<br>';
-				    echo get_user_meta($user_id, 'adresse_key', true);
-				    echo ' - ';
-				    echo get_user_meta($user_id, 'city_key', true);
-				    echo ' - ';
-				    echo get_user_meta($user_id, 'province_key', true);
-				    echo ' - ';
-				    echo get_user_meta($user_id, 'country_key', true);
-				    echo ' - ';
-				    echo get_user_meta($user_id, 'postal_code_key', true);
-				    echo '<br>';
-				    echo get_user_meta($user_id, 'phone_key', true);
-				    if(get_user_meta($user_id, 'poste_key', true) != ''){
-				    	echo ' - ';
-				    	echo get_user_meta($user_id, 'poste_key', true);
+				    $hide_adresse_job = get_user_meta( $user_id, 'hide_adresse_job_key', true);
+				    if($hide_adresse_job == 0 || $hide_adresse_job == ''){
+					    echo get_user_meta($user_id, 'adresse_key', true);
+					    echo ' - ';
+					    echo get_user_meta($user_id, 'city_key', true);
+					    echo ' - ';
+					    echo get_user_meta($user_id, 'province_key', true);
+					    echo ' - ';
+					    echo get_user_meta($user_id, 'country_key', true);
+					    echo ' - ';
+					    echo get_user_meta($user_id, 'postal_code_key', true);
+					    echo '<br>';
 				    }
-				    echo ' - ';
-				    echo $get_user_by_username->user_email;	    
-				    echo '<br>';
+				    $hide_contact_job = get_user_meta( $user_id, 'hide_contact_job_key', true);
+				    if($hide_contact_job == 0 || $hide_contact_job == ''){
+					    echo get_user_meta($user_id, 'phone_key', true);
+					    if(get_user_meta($user_id, 'poste_key', true) != ''){
+					    	echo ' - ';
+					    	echo get_user_meta($user_id, 'poste_key', true);
+					    }
+					    echo ' - ';
+					    echo $get_user_by_username->user_email;	    
+					    echo '<br>';
+				    }
+
 				    ?>
 				    
 				</div> 
@@ -473,40 +502,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 					echo'<div class="entry-meta-job-question-wrapper">';
 					
 						echo '<h3>Questions liées à la candidature</h3>';
-					
-						echo '<p style="font-weight: 600;">Est-ce que vous avez l&#8216;âge légal pour travailler au Canada?</p>';
-						echo '<select name="age_legal" class="age_legal" id="age_legal">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'Oui' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'Non' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<p style="font-weight: 600;">Concernant votre situation au Canada, détenez-vous</p>';
-						echo '<select name="situation_canada" class="situation_canada" id="situation_canada">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'La citoyenneté canadienne' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'La résidence permanente au canada' , 'monemploi' ) , '</option>';
-							echo '<option value="3">' . esc_html( 'Un permis de travail valide au canada' , 'monemploi' ) , '</option>';
-							echo '<option value="4">' . esc_html( 'Aucun de ces éléments' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<div class="permis_travail_wrapper" style="display: none;">';
-							echo '<p style="font-weight: 600;">Si vous détenez un permis de travail, quel type de permis avez-vous</p>';
-							echo '<select name="permis_travail" class="permis_travail" id="permis_travail">';
-								echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-								echo '<option value="1">' . esc_html( 'Permis fermé avec votre employeur actuel' , 'monemploi' ) , '</option>';
-								echo '<option value="2">' . esc_html( 'Permis ouvert' , 'monemploi' ) , '</option>';
-								echo '<option value="3">' . esc_html( 'Permis ouvert lie au statut d&#8216;un autre personne' , 'monemploi' ) , '</option>';
-								echo '<option value="4">' . esc_html( 'Permis d&#8216;etudes international' , 'monemploi' ) , '</option>';
-								echo '<option value="5">' . esc_html( 'Autre (demandeur d&#8216;asile, visiteur)' , 'monemploi' ) , '</option>';
-							echo '</select>';
-						echo '</div>';
-						
-						echo '<br />';
 						
 						echo '<p style="font-weight: 600;">Avez-vous déjà travaillé pour l&#8216;employeur ou l&#8216;une de ses sociétés affiliées?</p>';
 						echo '<select name="deja_travaille" class="deja_travaille" id="deja_travaille">';
@@ -526,57 +521,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						echo '</div>';
 						
 						echo '<br />';
-						
-						echo '<h3>Équité en emploi</h3>';
-						
-						echo '<p style="font-weight: 600;">Sexe à la naissance</p>';
-						echo '<select name="sexe" class="sexe" id="sexe">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'Masculin' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'Féminin' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<p style="font-weight: 600;">Origine ethnique</p>';
-						echo '<select name="origine_ethnique" class="origine_ethnique" id="origine_ethnique">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'Nord-américaines' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'Européennes' , 'monemploi' ) , '</option>';
-							echo '<option value="3">' . esc_html( 'Caraïbes' , 'monemploi' ) , '</option>';
-							echo '<option value="4">' . esc_html( 'Amérique latine - centrale et du Sud' , 'monemploi' ) , '</option>';
-							echo '<option value="5">' . esc_html( 'Africaines' , 'monemploi' ) , '</option>';
-							echo '<option value="6">' . esc_html( 'Asiatiques' , 'monemploi' ) , '</option>';
-							echo '<option value="7">' . esc_html( 'Océanie' , 'monemploi' ) , '</option>';
-							echo '<option value="8">' . esc_html( 'Autres origines ethniques et culturelles' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<p style="font-weight: 600;">Identification comme Autochtone</p>';
-						echo '<select name="autochtone" class="autochtone" id="autochtone">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'Ne souhaite pas repondre' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'Oui' , 'monemploi' ) , '</option>';
-							echo '<option value="3">' . esc_html( 'Non' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<p style="font-weight: 600;">Personne en situation d&#8216;handicap</p>';
-						echo '<select name="handicap" class="handicap" id="handicap">';
-							echo '<option value="0">' . esc_html( 'Choisissez une valeur' , 'monemploi' ) , '</option>';
-							echo '<option value="1">' . esc_html( 'Ne souhaite pas repondre' , 'monemploi' ) , '</option>';
-							echo '<option value="2">' . esc_html( 'Oui' , 'monemploi' ) , '</option>';
-							echo '<option value="3">' . esc_html( 'Non' , 'monemploi' ) , '</option>';
-						echo '</select>';
-						
-						echo '<br />';
-						
-						echo '<div class="handicap_wrapper" style="display: none;">';
-							echo '<p style="font-weight: 600;">Si vous avez un handicap, expliquer le</p>';
-							echo '<input type="text" name="handicap_" class="handicap_" id="handicap_">';
-						echo '</div>';
 			
 							// Arguments to query media attachments
 						$args = array(

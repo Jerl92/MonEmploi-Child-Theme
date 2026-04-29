@@ -64,24 +64,30 @@
 			    echo get_user_meta($user_id, 'company_key', true);
 		    }	
 		    echo '<br>';
-		    echo get_user_meta($user_id, 'adresse_key', true);
-		    echo ' - ';
-		    echo get_user_meta($user_id, 'city_key', true);
-		    echo ' - ';
-		    echo get_user_meta($user_id, 'province_key', true);
-		    echo ' - ';
-		    echo get_user_meta($user_id, 'country_key', true);
-		    echo ' - ';
-		    echo get_user_meta($user_id, 'postal_code_key', true);
-		    echo '<br>';
-		    echo get_user_meta($user_id, 'phone_key', true);
-		    if(get_user_meta($user_id, 'poste_key', true) != ''){
-		    	echo ' - ';
-		    	echo get_user_meta($user_id, 'poste_key', true);
+		    $hide_adresse_candidacy = get_user_meta( $user_id, 'hide_adresse_candidacy_key', true);
+		    if($hide_adresse_candidacy == 0 || $hide_adresse_candidacy == ''){
+			    echo get_user_meta($user_id, 'adresse_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'city_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'province_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'country_key', true);
+			    echo ' - ';
+			    echo get_user_meta($user_id, 'postal_code_key', true);
+			    echo '<br>';
 		    }
-		    echo ' - ';
-		    echo $get_user_by_username->user_email;	    
-		    echo '<br>';
+		    $hide_contact_candidacy = get_user_meta( $user_id, 'hide_contact_candidacy_key', true);
+		    if($hide_contact_candidacy == 0 || $hide_contact_candidacy == ''){
+			    echo get_user_meta($user_id, 'phone_key', true);
+			    if(get_user_meta($user_id, 'poste_key', true) != ''){
+			    	echo ' - ';
+			    	echo get_user_meta($user_id, 'poste_key', true);
+			    }
+			    echo ' - ';
+			    echo $get_user_by_username->user_email;	    
+			    echo '<br>';
+		    }
 		    
 		    ?>
 		    
@@ -239,42 +245,6 @@
 		echo '<div style="width: 100%; style="padding-bottom: 15px;">';
 		
 			echo '<h3><span class="">'. __('Questions liées à la candidature', 'monemploi') .'</span></h3>';
-			
-			$age_legal = get_post_meta( get_the_ID(), 'my_age_legal_key', true );
-			echo '<p style="font-weight: 400;">Est-ce que vous avez l&#8216;âge légal pour travailler au Canada?</p>';
-			if($age_legal == 1){
-				echo 'Oui';
-			} elseif ($age_legal == 2){
-				echo 'Non';
-			}
-			
-		       	$situation_canada = get_post_meta( get_the_ID(), 'my_situation_canada_key', true );
-		       	echo '<p style="font-weight: 400;">Concernant votre situation au Canada, détenez-vous</p>';
-		       	if($situation_canada == 1){
-				echo 'La citoyenneté canadienne';
-			} elseif ($situation_canada == 2){
-				echo 'La résidence permanente au canada';
-			} elseif ($situation_canada == 3){
-				echo 'Un permis de travail valide au canada';
-			} elseif ($situation_canada == 4){
-				echo 'Aucun de ces éléments';
-			}
-		       	
-		       	$permis_travail = get_post_meta( get_the_ID(), 'my_permis_travail_key', true );
-		       	if($permis_travail != 0){
-		       		echo '<p style="font-weight: 400;">Si vous détenez un permis de travail, quel type de permis avez-vous</p>';
-		       		if($permis_travail == 1){
-					echo 'Permis fermé avec votre employeur actuel';
-				} elseif ($permis_travail == 2){
-					echo 'Permis ouvert';
-				} elseif ($permis_travail == 3){
-					echo 'Permis ouvert lie au statut d&#8216;un autre personne';
-				} elseif ($permis_travail == 4){
-					echo 'Permis d&#8216;etudes international';
-				} elseif ($permis_travail == 5){
-					echo 'Autre (demandeur d&#8216;asile, visiteur)';
-				}
-		       	}
 		       	
 		       	$deja_travaille = get_post_meta( get_the_ID(), 'my_deja_travaille_key', true );
 		       	echo '<p style="font-weight: 400;">Avez-vous déjà travaillé pour l&#8216;employeur ou l&#8216;une de ses sociétés affiliées?</p>';
@@ -295,65 +265,6 @@
 				echo 'Numero: ' . $superieur_numero . ' - ';
 				if($superieur_poste != ''){
 					echo 'Poste: ' . $superieur_poste;
-				}
-			}
-			
-			echo '<h3><span class="">'. __('Équité en emploi', 'monemploi') .'</span></h3>';
-			
-		       	$sexe = get_post_meta( get_the_ID(), 'my_sexe_key', true );
-		       	echo '<p style="font-weight: 400;">Sexe à la naissance</p>';
-			if($sexe == 1){
-				echo 'Masculin';
-			} elseif ($sexe == 2){
-				echo 'Féminin';
-			}
-		       	
-		       	
-		       	$origine_ethnique = get_post_meta( get_the_ID(), 'my_origine_ethnique_key', true );
-		       	echo '<p style="font-weight: 400;">Origine ethnique</p>';
-	       		if($origine_ethnique == 1){
-				echo 'Nord-américaines';
-			} elseif ($origine_ethnique == 2){
-				echo 'Européennes';
-			} elseif ($origine_ethnique == 3){
-				echo 'Caraïbes';
-			} elseif ($origine_ethnique == 4){
-				echo 'Amérique latine - centrale et du Sud';
-			} elseif ($origine_ethnique == 5){
-				echo 'Africaines';
-			} elseif ($origine_ethnique == 6){
-				echo 'Asiatiques';
-			} elseif ($origine_ethnique == 7){
-				echo 'Océanie';
-			} elseif ($origine_ethnique == 8){
-				echo 'Autres origines ethniques et culturelles';
-			}
-		       	
-		       	$autochtone = get_post_meta( get_the_ID(), 'my_autochtone_key', true );
-		       	echo '<p style="font-weight: 400;">Identification comme Autochtone</p>';
-			if($autochtone == 1){
-				echo 'Ne souhaite pas repondre';
-			} elseif ($autochtone == 2){
-				echo 'Oui';
-			} elseif ($autochtone == 3){
-				echo 'Non';
-			}
-		       	
-		       	$handicap = get_post_meta( get_the_ID(), 'my_handicap_key', true );
-		       	echo '<p style="font-weight: 400;">Personne en situation d&#8216;handicap</p>';
-			if($handicap == 1){
-				echo 'Ne souhaite pas repondre';
-			} elseif ($handicap == 2){
-				echo 'Oui';
-			} elseif ($handicap == 3){
-				echo 'Non';
-			}
-		       	
-		       	$handicap_ = get_post_meta( get_the_ID(), 'my_handicap__key', true );
-			if($handicap == 2){
-				if($handicap_ != ''){
-					echo '<p style="font-weight: 400;">Si vous avez un handicap, expliquer le</p>';
-					echo $handicap_;
 				}
 			}
 			
@@ -472,7 +383,7 @@
 				<?php } else { ?>
 					<div class="ns-cards ns-feedback">
 			                    <div class="ns-feedback-form">
-			                    	<p>Vous ne pouvez pas répondre cette candidature.</p>
+			                    	<p>Vous ne pouvez pas répondre à cette candidature.</p>
 			                    </div>
 			                </div> <!-- /.ns-feedback-form -->
 				<?php } ?>
