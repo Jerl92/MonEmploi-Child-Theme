@@ -19,12 +19,12 @@
 	$author_obj = get_user_by('id', $author_id);
 	if (  $author_id == get_current_user_id() || $author_id_key == get_current_user_id() ) {
 	
-	    if ($_GET['update_status'] == true) {
+	    if ($_GET['update_status'] == 'true') {
 	        echo "<p>Le statuts a bien été sauvegardé.</p>";
 	    }
 	    
-	    if ($_GET['update_status'] == false) {
-	        echo "<p>Le statuts a n&#8216;a pas été bien sauvegardé.</p>";
+	    if ($_GET['update_status'] == 'false') {
+	        echo "<p>Le statuts n&#8216;a pas été bien sauvegardé.</p>";
 	    }
 	    	
 	?>
@@ -221,7 +221,7 @@
 						} else {
 							echo '<option value="2">Entrevu accepter</option>';
 						}
-						if($get_status == 2){
+						if($get_status == 3){
 							echo '<option value="3" selected>Embaucher</option>';
 						} else {
 							echo '<option value="3">Embaucher</option>';
