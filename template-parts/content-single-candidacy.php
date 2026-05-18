@@ -17,7 +17,16 @@
 	$author_id_key = get_post_meta( get_the_ID(), 'my_author_id_key', true );
 	$author_id = get_the_author_meta( 'ID' ); 
 	$author_obj = get_user_by('id', $author_id);
-	if (  $author_id == get_current_user_id() || $author_id_key == get_current_user_id() ) {	
+	if (  $author_id == get_current_user_id() || $author_id_key == get_current_user_id() ) {
+	
+	    if ($_GET['update_status'] == true) {
+	        echo "<p>Le statuts a bien été sauvegardé.</p>";
+	    }
+	    
+	    if ($_GET['update_status'] == false) {
+	        echo "<p>Le statuts a n&#8216;a pas été bien sauvegardé.</p>";
+	    }
+	    	
 	?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -192,41 +201,42 @@
 				$current_user = wp_get_current_user();
 				$user_meta = get_userdata($current_user->ID);
 				$user_role = $user_meta->roles[0];
+				$userid_ = get_post_field ('post_author', get_the_ID());
 				if($user_role == 'employeur'){
 				
-				if($get_status == null || $get_status == 0){
-					echo '<select name="status_'. $i .'" id="status_'. $i .'" data-object-id="' . get_the_ID() . '">';
-						echo '<option value="0">En attente</option>';
-						echo '<option value="1">Refuser</option>';
-						echo '<option value="2">Entrevu accepter</option>';
-						echo '<option value="3">Embaucher</option>';
-					echo '</select>';
-				} else {
-				
-					echo '<select name="status_'. $i .'" id="status_'. $i .'" data-object-id="' . get_the_ID() . '">';
-					
-						if($get_status == 1 ){
-						 	echo '<option value="1">Refusé</option>';
-						 } elseif($get_status == 2){
-						 	echo '<option value="2">Entrevue accepté</option>';
-						 } elseif($get_status == 3){
-						 	echo '<option value="3">Embauché</option>';
+				echo '<form action="'. $_SERVER['REQUEST_URI'] .'" method="post">';
+					echo '<select name="status_" id="status_">';
+						if($get_status == '' || $get_status == 0){
+							echo '<option value="0" selected>En attente</option>';
+						} else {
+							echo '<option value="0">En attente</option>';
 						}
-						
-						echo '<option value="0">En attente</option>';
-						echo '<option value="1">Refuser</option>';
-						echo '<option value="2">Entrevu accepter</option>';
-						echo '<option value="3">Embaucher</option>';
+						if($get_status == 1){
+							echo '<option value="1" selected>Refuser</option>';
+						} else {
+							echo '<option value="1">Refuser</option>';
+						}
+						if($get_status == 2){
+							echo '<option value="2" selected>Entrevu accepter</option>';
+						} else {
+							echo '<option value="2">Entrevu accepter</option>';
+						}
+						if($get_status == 2){
+							echo '<option value="3" selected>Embaucher</option>';
+						} else {
+							echo '<option value="3">Embaucher</option>';
+						}
 					echo '</select>';
-				}
-                   
-                   		echo '<button class="save_status_candidacy save_status_candidacy_'. $i . '" data-object-id="' . $i . '">Sauvegarder</button>';
-                   		echo '<br>';
-                   		echo '<span class="save_status_candidacy_message"></span>';
+				        
+				       	echo '<input type="hidden" name="userid" value="' . $userid_ . '" />';
+				       	echo '<input type="hidden" name="postid" value="' . get_the_ID() . '" />';
+			                echo '<input type="hidden" name="action" value="save_status_candidacy" />';
+	                   		echo '<button>Sauvegarder</button>';
+				echo '</form>';
                    
 				} elseif ($user_role = 'employer') {
 				    
-				         if($get_status == 0 || $get_status == null) {
+				         if($get_status == 0 || $get_status == '') {
 				             echo 'En attente';
 				         } elseif($get_status == 1 ){
 					 	echo 'Refusé';
