@@ -707,7 +707,8 @@ if ($_GET['dayoff'] == 'true') {
 		echo '<br>';
 		$dayoff_attachment = get_post_meta( get_the_ID(), 'dayoff_attachment_key', true );
 		if($dayoff_attachment != ''){
-			echo '<a href="'.wp_get_attachment_url($dayoff_attachment).'">Document</a>';
+			$url_attachment = wp_get_attachment_url($dayoff_attachment);
+			echo '<a href="'.$url_attachment.'">'.basename($url_attachment).'</a>';
 		}
 			    
 	    	echo '<br>';
