@@ -247,7 +247,7 @@ if (implode($params) == ''){
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[1] != '' && $datetimes[2] != ''){
@@ -269,7 +269,7 @@ if (implode($params) == ''){
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[3] != '' && $datetimes[4] != ''){
@@ -291,7 +291,7 @@ if (implode($params) == ''){
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';	    }
 	    if($datetimes[5] != '' && $datetimes[6] != ''){
 		    $diffdatetime = $datetimes[6] - $datetimes[5];
@@ -312,7 +312,7 @@ if (implode($params) == ''){
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[7] != '' && $datetimes[8] != ''){
@@ -334,7 +334,7 @@ if (implode($params) == ''){
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    $pay_sum = array_sum($pay);
@@ -342,7 +342,7 @@ if (implode($params) == ''){
 	    	    echo '<br>';
 		    echo '<span>Somme des salaires</span>';
 		    echo '<br>';
-		    echo 'Le total de vos montants brute: '. $pay_sum .'$';
+		    echo 'Le total de vos montants brute: '. round($pay_sum, 2).'$';
 		    echo '<br>';
 	    }
 	    
@@ -928,7 +928,7 @@ if ($_GET['edit'] == 'true') {
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[2] != '' && $datetimes[3] != ''){
@@ -950,7 +950,7 @@ if ($_GET['edit'] == 'true') {
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[4] != '' && $datetimes[5] != ''){
@@ -972,7 +972,7 @@ if ($_GET['edit'] == 'true') {
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';	    }
 	    if($datetimes[6] != '' && $datetimes[7] != ''){
 		    $diffdatetime = $datetimes[7] - $datetimes[6];
@@ -993,7 +993,7 @@ if ($_GET['edit'] == 'true') {
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    if($datetimes[8] != '' && $datetimes[9] != ''){
@@ -1015,7 +1015,7 @@ if ($_GET['edit'] == 'true') {
 		    $salary = $salaire/60;
 		    $pay_once = $worktime * $salary;
 		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.$pay_once.'$';
+		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
 		    echo '<br>';
 	    }
 	    $pay_sum = array_sum($pay);
@@ -1023,7 +1023,7 @@ if ($_GET['edit'] == 'true') {
 	    	    echo '<br>';
 		    echo '<span>Somme des salaires</span>';
 		    echo '<br>';
-		    echo 'Le total de vos montants brute: '. $pay_sum .'$';
+		    echo 'Le total de vos montants brute: '. round($pay_sum, 2) .'$';
 		    echo '<br>';
 	    }
 	    
