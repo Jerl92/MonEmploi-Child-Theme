@@ -32,8 +32,14 @@ if (implode($params) == ''){
 	$datepickerendhoraire = get_post_meta( get_the_ID(), 'datepickerendhoraire_key', true );
 	$timeendhoraire = get_post_meta( get_the_ID(), 'timeendhoraire_key', true );	
 	$employee_horaire = get_post_meta( get_the_ID(), 'employee_horaire_key', true);
+	$dateminus24 = strtotime($datepickerstarthoraire.'T'.$timestarthoraire.' -24 hour');
 	$datewithoutone = strtotime($datepickerstarthoraire.'T'.$timestarthoraire.' -1 hour');
+	$datestartstrtotime = strtotime($datepickerstarthoraire.'T'.$timestarthoraire);
 	$dateendstrtotime = strtotime($datepickerendhoraire.'T'.$timeendhoraire);	
+	$datepickerstartpause = get_post_meta( get_the_ID(), 'datepickerstartpause_key', true );
+	$timestartpause = get_post_meta( get_the_ID(), 'timestartpause_key', true );
+	$datepickerendpause = get_post_meta( get_the_ID(), 'datepickerendpause_key', true );
+	$timeendpause = get_post_meta( get_the_ID(), 'timeendpause_key', true );
 	$employee_replace = get_post_meta( get_the_ID(), 'employee_replace_key', true );
 	$dayoff_status = get_post_meta( get_the_ID(), 'dayoff_status_key', true );
 	if($user_role == 'employer' || $user_role == 'employeur'){ ?>
@@ -85,6 +91,12 @@ if (implode($params) == ''){
 	    $salaire = get_post_meta( get_the_ID(), 'salaire_key', true );
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
+	    
+	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
+	    
+	    echo '<br>';
+	    
+	    echo '<span>ID - '.get_the_ID().'</span>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
@@ -207,6 +219,10 @@ if (implode($params) == ''){
 	    echo '<br>';
 	    echo 'Début de l&#8216;horaire: '.$datepickerstarthoraire . ' - ' . $timestarthoraire;
 	    echo '<br>';
+	    echo 'Début de la pause: '.$datepickerstartpause . ' - ' . $timestartpause;
+	    echo '<br>';
+	    echo 'Fin de la pause: '.$datepickerendpause . ' - ' . $timeendpause;
+	    echo '<br>';
 	    echo 'Fin de l&#8216;horaire: '.$datepickerendhoraire . ' - ' . $timeendhoraire;
 	    echo '<br>';
 	    echo 'Vous avez droit à '.$timebrake.' minutes de pause';
@@ -218,6 +234,9 @@ if (implode($params) == ''){
 	    $i = 0;
 	    $datetimes = [];
 	    $push_ = get_post_meta( get_the_ID(), 'push_key', true );
+	    if($push_ == ''){
+	    	$push_ = [];
+	    }
 	    foreach($push_ as $push){
 	    	if($push[0] == 'entrer'){
 	    		echo $push[0] . ' - ' . gmdate("Y-m-d H:i:s", $push[1]);
@@ -233,109 +252,33 @@ if (implode($params) == ''){
 	    }
 	    echo '<br>';
 	    $pay = [];
-	    if($datetimes[0] != '' && $datetimes[1] != ''){
-		    $diffdatetime = $datetimes[1] - $datetimes[0];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[1] != '' && $datetimes[2] != ''){
-		    $diffdatetime = $datetimes[2] - $datetimes[1];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[2] != '' && $datetimes[3] != ''){
-		    $diffdatetime = $datetimes[3] - $datetimes[2];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[3] != '' && $datetimes[4] != ''){
-		    $diffdatetime = $datetimes[4] - $datetimes[3];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[4] != '' && $datetimes[5] != ''){
-		    $diffdatetime = $datetimes[5] - $datetimes[4];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';	    }
-	    if($datetimes[5] != '' && $datetimes[6] != ''){
-		    $diffdatetime = $datetimes[6] - $datetimes[5];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[6] != '' && $datetimes[7] != ''){
-		    $diffdatetime = $datetimes[7] - $datetimes[6];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[7] != '' && $datetimes[8] != ''){
-		    $diffdatetime = $datetimes[8] - $datetimes[7];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[8] != '' && $datetimes[9] != ''){
-		    $diffdatetime = $datetimes[9] - $datetimes[8];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
+	    $datetimescount = count($datetimes);
+	    for ($i = 0; $i < $datetimescount; $i++) {
+	    	if ($i % 2 == 0) {
+			if($datetimes[$i] != '' && $datetimes[$i+1] != ''){
+			    $diffdatetime = $datetimes[$i+1] - $datetimes[$i];
+			    $seconds = $diffdatetime;
+			    $hours = floor($seconds / 3600);
+			    $minutes = floor(($seconds / 60) % 60);
+			    $secs = $seconds % 60;
+			    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			    echo '<br>';
+			    $gethours = $hours;
+			    $getminutes = $minutes;
+			    $worktime = ($gethours * 60) + $getminutes;
+			    $salary = $salaire/60;
+			    $pay_once = $worktime * $salary;
+			    $pay[] = $worktime * $salary;
+			    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
+			    echo '<br>';
+		    	}
+		} else {
+			if($datetimes[$i] != '' && $datetimes[$i+1] != ''){
+			    $diffdatetime = $datetimes[$i+1] - $datetimes[$i];
+			    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
+			    echo '<br>';
+		    	}
+		}
 	    }
 	    $pay_sum = array_sum($pay);
 	    if($pay_sum != 0){
@@ -346,31 +289,155 @@ if (implode($params) == ''){
 		    echo '<br>';
 	    }
 	    
+ 	    $fristpush = array_first($push_);
+	    if($fristpush[0] == 'entrer'){
+	    	if($fristpush[1] <= $datestartstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $datestartstrtotime - $fristpush[1];
+		    	echo 'Nombre de temps en avance.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+	    	}
+	    }
+	   if($fristpush[0] == 'entrer'){
+	    	if($fristpush[1] >= $datestartstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $fristpush[1] -  $datestartstrtotime;
+		    	echo 'Nombre de temps en retard.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+	    	}
+	    }
 	    $endpush = end($push_);
 	    if($endpush[0] == 'entrer'){
 	    	echo '<br>';
 	    	$endpushcalc = $current_time - $endpush[1];
 	    	echo 'Nombre de temps de pointages.';
-	    	echo '<br>';
-           	$seconds = $endpushcalc;
+		echo '<br>';
+                $seconds = $endpushcalc;
 		$hours = floor($seconds / 3600);
 		$minutes = floor(($seconds / 60) % 60);
 		$secs = $seconds % 60;
 		echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
 	    	echo '<br>';
 	    }
-	    if($current_time <= $dateendstrtotime){
+	    if($endpush[0] == 'entrer'){
+	    	if($current_time >= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $current_time - $dateendstrtotime;
+		    	echo 'Nombre de temps en supplémentaire.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    if($endpush[0] == 'sortie'){
+	    	if($endpush[1] >= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $endpush[1] - $dateendstrtotime;
+		    	echo 'Nombre de temps en supplémentaire.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    if($endpush[0] == 'sortie'){
+	    	if($endpush[1] <= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $dateendstrtotime - $endpush[1];
+		    	echo 'Nombre de temps de depart hâtif.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    $i = 0;
+	    $x = 0;
+	    $pausetime = 0;
+	    foreach($push_ as $push){
+	    	 if($push[0] == 'entrer'){
+	    		$entrer[$x] = $push[1];
+	    		$x++;
+	    	}
+	    	if($push[0] == 'sortie'){
+	    		$sortie[$i] = $push[1];
+	    		$i++;
+	    	}
+	    }
+	    
+	    $entrercount = count($entrer);
+	    $pausetime = 0;
+	    for ($i = 1; $i < $entrercount; $i++) {
+		if(($entrer[$i] != 0 || $entrer[$i] != '') && ($sortie[$i-1] != 0 || $sortie[$i-1] != '')){
+	    		$pausetime = $pausetime + ($entrer[$i] - $sortie[$i-1]);
+	    	}
+	    }
+
+
+		$seconds = $pausetime;
+		$hours = floor($seconds / 3600);
+		$minutes = floor(($seconds / 60) % 60);
+		$secs = $seconds % 60;
+		if($minutes != 0){
+			echo 'Vous avez passer ce nombre de temps en pause.';
+		    	echo '<br>';
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			echo '<br>';
+			echo '<br>';
+		}
+		
+		if($minutes > $timebrake){
+			$timebrakecalc = $minutes - $timebrake;
+			echo 'Vous avez depasé le temps de pause de '.$timebrakecalc.' minutes.';
+			echo '<br>';
+			echo '<br>';
+		}
+		if($minutes < $timebrake){
+			$timebrakecalc_ = $timebrake - $minutes;
+			echo 'Il vous reste '.$timebrakecalc_.' minutes de pause.';
+			echo '<br>';
+			echo '<br>';
+		}
+	    if($current_time <= $dateendstrtotime && $current_time >= $datestartstrtotime){
 		    if($endpush[0] == 'sortie'){
 		    	echo '<br>';
 		    	$endpushcalc = $current_time - $endpush[1];
-		    	echo 'Le nombre de temps qui vous avez passé en pause.';
-		    	echo '<br>';
-                	$seconds = $endpushcalc;
-		        $hours = floor($seconds / 3600);
-		        $minutes = floor(($seconds / 60) % 60);
-		        $secs = $seconds % 60;
-		        echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    	echo '<br>';
+		    	if($endpushcalc <= 12600 && $endpushcalc >= -12600){
+			    	echo 'Le nombre de temps qui vous avez passé en pause.';
+			    	echo '<br>';
+	                	$seconds = $endpushcalc;
+			        $hours = floor($seconds / 3600);
+			        $minutes = floor(($seconds / 60) % 60);
+			        $secs = $seconds % 60;
+			        echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			    	echo '<br>';
+			    	echo '<br>';
+		    	}
 		    }
 	    }
 	    
@@ -382,7 +449,7 @@ if (implode($params) == ''){
 		echo '<p>Votre feuille de temps a été désapprouver.</p>';
 	    }
 
-	    if($user_role == 'employer'){
+	    if($user_role == 'employer' && $current_time <= $dateminus24){
 	    	echo '<br>';
 	    	$current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]" . strtok($_SERVER['REQUEST_URI'], '?');
 	    	$dayoff_status = get_post_meta( get_the_ID(), 'dayoff_status_key', true );
@@ -448,6 +515,7 @@ if ($_GET['dayoff'] == 'true') {
 	$timeendhoraire = get_post_meta( get_the_ID(), 'timeendhoraire_key', true );	
 	$employee_horaire = get_post_meta( get_the_ID(), 'employee_horaire_key', true);
 	$datewithoutone = strtotime($datepickerstarthoraire.'T'.$timestarthoraire.' -1 hour');
+	$datestartstrtotime = strtotime($datepickerstarthoraire.'T'.$timestarthoraire);
 	$dateendstrtotime = strtotime($datepickerendhoraire.'T'.$timeendhoraire);	
 	if($user_role == 'employeur' || $user_role == 'employer'){ ?>
 	<div class="entry-meta-job-wrapper">
@@ -467,6 +535,10 @@ if ($_GET['dayoff'] == 'true') {
 	    $salaire = get_post_meta( get_the_ID(), 'salaire_key', true );
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
+	    
+	    echo '<p>UUID - '.get_the_title(get_the_ID()).'</p>';
+	    
+	    echo '<p>ID - '.get_the_ID().'</p>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
@@ -739,6 +811,7 @@ if ($_GET['edit'] == 'true') {
 	$timeendhoraire = get_post_meta( get_the_ID(), 'timeendhoraire_key', true );	
 	$employee_horaire = get_post_meta( get_the_ID(), 'employee_horaire_key', true);
 	$datewithoutone = strtotime($datepickerstarthoraire.'T'.$timestarthoraire.' -1 hour');
+	$datestartstrtotime = strtotime($datepickerstarthoraire.'T'.$timestarthoraire);
 	$dateendstrtotime = strtotime($datepickerendhoraire.'T'.$timeendhoraire);	
 	if($user_role == 'employeur'){ ?>
 	<div class="entry-meta-job-wrapper">
@@ -754,10 +827,20 @@ if ($_GET['edit'] == 'true') {
 	    $timestarthoraire = get_post_meta( get_the_ID(), 'timestarthoraire_key', true );
 	    $datepickerendhoraire = get_post_meta( get_the_ID(), 'datepickerendhoraire_key', true );
 	    $timeendhoraire = get_post_meta( get_the_ID(), 'timeendhoraire_key', true );
+	    $datepickerstartpause = get_post_meta( get_the_ID(), 'datepickerstartpause_key', true );
+	    $timestartpause = get_post_meta( get_the_ID(), 'timestartpause_key', true );
+	    $datepickerendpause = get_post_meta( get_the_ID(), 'datepickerendpause_key', true );
+	    $timeendpause = get_post_meta( get_the_ID(), 'timeendpause_key', true );
 	    $timebrake = get_post_meta( get_the_ID(), 'timebrake_key', true );
 	    $salaire = get_post_meta( get_the_ID(), 'salaire_key', true );
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
+	    
+	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
+	    
+	    echo '<br>';
+	    
+	    echo '<span>ID - '.get_the_ID().'</span>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
@@ -881,9 +964,13 @@ if ($_GET['edit'] == 'true') {
 	    echo '<br>';
 	    echo 'Début de l&#8216;horaire: <input type="text" id="datepickerstarthoraire" class="datepickerstarthoraire" name="datepickerstarthoraire" data-toggle="datepickerstarthoraire" value='. $datepickerstarthoraire .' required> - <input type="time" id="timestarthoraire" name="timestarthoraire" value='. $timestarthoraire .' required>';
 	    echo '<br>';
+	    echo 'Début de la pause: <input type="text" id="datepickerstartpause" class="datepickerstartpause" name="datepickerstartpause" data-toggle="datepickerstartpause" value='. $datepickerstartpause .' required> - <input type="time" id="timestartpause" name="timestartpause" value='. $timestartpause .' required>';
+	    echo '<br>';
+	    echo 'Fin de la pause: <input type="text" id="datepickerendpause" class="datepickerendpause" name="datepickerendpause" data-toggle="datepickerendpause" value='. $datepickerendpause .' required> - <input type="time" id="timeendpause" name="timeendpause" value='. $timeendpause .' required>';
+	    echo '<br>';
 	    echo 'Fin de l&#8216;horaire: <input type="text" id="datepickerendhoraire" class="datepickerendhoraire" name="datepickerendhoraire" data-toggle="datepickerendhoraire" value='. $datepickerendhoraire .' required> - <input type="time" id="timeendhoraire" name="timeendhoraire" value='. $timeendhoraire .' required>';
 	    echo '<br>';
-	    echo 'Vous avez droit à <input type="number" class="timebrake" name="timebrake" id="timebrake" value='. $timebrake .' required> minutes de pause';
+	    echo 'Vous avez droit à '. $timebrake .' minutes de pause';
 	    echo '<br>';
 	    echo 'Votre salaire horaire est de <input type="number" class="salaire" name="salaire" id="salaire" step=".01" value='. $salaire .' required>$ de l&#8216;heure';
 	    echo '<br>';
@@ -892,141 +979,99 @@ if ($_GET['edit'] == 'true') {
 	    echo '<br>';
 	    echo '<input type="number" id="punchquantity" class="punchquantity" name="punchquantity" style="display: none;">';
 	    $i = 1;
+	    $y = 0;
 	    $datetimes = [];
 	    $push_ = get_post_meta( get_the_ID(), 'push_key', true );
+	    if($push_ == ''){
+	    	$push_ = [];
+	    }
 	    foreach($push_ as $push){
 	    	if($push[0] == 'entrer'){
 			$date = date('m/d/Y', $push[1]);
 			$time = date('H:i:s', $push[1]);
 	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="' . $date . '"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'">';
-	    		$datetimes[$i] = $push[1];
+	    		$datetimes[$y] = $push[1];
 	        	echo '<br>';
 	    	}
 	    	if($push[0] == 'sortie'){
 			$date = date('m/d/Y', $push[1]);
 			$time = date('H:i:s', $push[1]);
 	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="'. $date .'"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'">';
-	    		$datetimes[$i] = $push[1];
+	    		$datetimes[$y] = $push[1];
 	    		echo '<br>';
 	    	}
 	    	$i++;
+	    	$y++;
 	    }
 	    echo '<div class="addpunchdatetime"></div>';
 	    echo '<br>';
 	    $pay = [];
-	    if($datetimes[1] != '' && $datetimes[2] != ''){
-		    $diffdatetime = $datetimes[2] - $datetimes[1];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[2] != '' && $datetimes[3] != ''){
-		    $diffdatetime = $datetimes[3] - $datetimes[2];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[3] != '' && $datetimes[4] != ''){
-		    $diffdatetime = $datetimes[4] - $datetimes[3];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[4] != '' && $datetimes[5] != ''){
-		    $diffdatetime = $datetimes[5] - $datetimes[4];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[5] != '' && $datetimes[6] != ''){
-		    $diffdatetime = $datetimes[6] - $datetimes[5];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';	    }
-	    if($datetimes[6] != '' && $datetimes[7] != ''){
-		    $diffdatetime = $datetimes[7] - $datetimes[6];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[7] != '' && $datetimes[8] != ''){
-		    $diffdatetime = $datetimes[8] - $datetimes[7];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
-	    }
-	    if($datetimes[8] != '' && $datetimes[9] != ''){
-		    $diffdatetime = $datetimes[9] - $datetimes[8];
-		    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
-		    echo '<br>';
-	    }
-	    if($datetimes[9] != '' && $datetimes[10] != ''){
-		    $diffdatetime = $datetimes[10] - $datetimes[9];
-		    $seconds = $diffdatetime;
-		    $hours = floor($seconds / 3600);
-		    $minutes = floor(($seconds / 60) % 60);
-		    $secs = $seconds % 60;
-		    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    echo '<br>';
-		    $gethours = $hours;
-		    $getminutes = $minutes;
-		    $worktime = ($gethours * 60) + $getminutes;
-		    $salary = $salaire/60;
-		    $pay_once = $worktime * $salary;
-		    $pay[] = $worktime * $salary;
-		    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
-		    echo '<br>';
+	    $datetimescount = count($datetimes);
+	    for ($i = 0; $i < $datetimescount; $i++) {
+	    	if ($i % 2 == 0) {
+			if($datetimes[$i] != '' && $datetimes[$i+1] != ''){
+			    $diffdatetime = $datetimes[$i+1] - $datetimes[$i];
+			    $seconds = $diffdatetime;
+			    $hours = floor($seconds / 3600);
+			    $minutes = floor(($seconds / 60) % 60);
+			    $secs = $seconds % 60;
+			    echo 'Dans: '.sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			    echo '<br>';
+			    $gethours = $hours;
+			    $getminutes = $minutes;
+			    $worktime = ($gethours * 60) + $getminutes;
+			    $salary = $salaire/60;
+			    $pay_once = $worktime * $salary;
+			    $pay[] = $worktime * $salary;
+			    echo 'Votre salaire brute: '.round($pay_once, 2).'$';
+			    echo '<br>';
+		    	}
+		} else {
+			if($datetimes[$i] != '' && $datetimes[$i+1] != ''){
+			    $diffdatetime = $datetimes[$i+1] - $datetimes[$i];
+			    echo 'Sortie: '.gmdate("H:i:s", $diffdatetime);
+			    echo '<br>';
+		    	}
+		}
 	    }
 	    $pay_sum = array_sum($pay);
 	    if($pay_sum != 0){
 	    	    echo '<br>';
 		    echo '<span>Somme des salaires</span>';
 		    echo '<br>';
-		    echo 'Le total de vos montants brute: '. round($pay_sum, 2) .'$';
+		    echo 'Le total de vos montants brute: '. round($pay_sum, 2).'$';
 		    echo '<br>';
 	    }
 	    
+ 	    $fristpush = array_first($push_);
+	    if($fristpush[0] == 'entrer'){
+	    	if($fristpush[1] <= $datestartstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $datestartstrtotime - $fristpush[1];
+		    	echo 'Nombre de temps en avance.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+	    	}
+	    }
+	   if($fristpush[0] == 'entrer'){
+	    	if($fristpush[1] >= $datestartstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $fristpush[1] -  $datestartstrtotime;
+		    	echo 'Nombre de temps en retard.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+	    	}
+	    }
 	    $endpush = end($push_);
 	    if($endpush[0] == 'entrer'){
 	    	echo '<br>';
@@ -1040,18 +1085,113 @@ if ($_GET['edit'] == 'true') {
 		echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
 	    	echo '<br>';
 	    }
-	    if($current_time <= $dateendstrtotime){
+	    if($endpush[0] == 'entrer'){
+	    	if($current_time >= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $current_time - $dateendstrtotime;
+		    	echo 'Nombre de temps en supplémentaire.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    if($endpush[0] == 'sortie'){
+	    	if($endpush[1] >= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $endpush[1] - $dateendstrtotime;
+		    	echo 'Nombre de temps en supplémentaire.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    if($endpush[0] == 'sortie'){
+	    	if($endpush[1] <= $dateendstrtotime){
+		    	echo '<br>';
+		    	$endpushcalc = $dateendstrtotime - $endpush[1];
+		    	echo 'Nombre de temps de depart hâtif.';
+		    	echo '<br>';
+	           	$seconds = $endpushcalc;
+			$hours = floor($seconds / 3600);
+			$minutes = floor(($seconds / 60) % 60);
+			$secs = $seconds % 60;
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+		    	echo '<br>';
+		    	echo '<br>';
+	    	}
+	    }
+	    $i = 0;
+	    $x = 0;
+	    $pausetime = 0;
+	    foreach($push_ as $push){
+	    	 if($push[0] == 'entrer'){
+	    		$entrer[$x] = $push[1];
+	    		$x++;
+	    	}
+	    	if($push[0] == 'sortie'){
+	    		$sortie[$i] = $push[1];
+	    		$i++;
+	    	}
+	    }
+	    
+	    $entrercount = count($entrer);
+	    $pausetime = 0;
+	    for ($i = 1; $i < $entrercount; $i++) {
+		if(($entrer[$i] != 0 || $entrer[$i] != '') && ($sortie[$i-1] != 0 || $sortie[$i-1] != '')){
+	    		$pausetime = $pausetime + ($entrer[$i] - $sortie[$i-1]);
+	    	}
+	    }
+
+
+		$seconds = $pausetime;
+		$hours = floor($seconds / 3600);
+		$minutes = floor(($seconds / 60) % 60);
+		$secs = $seconds % 60;
+		if($minutes != 0){
+			echo 'Vous avez passer ce nombre de temps en pause.';
+		    	echo '<br>';
+			echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			echo '<br>';
+			echo '<br>';
+		}
+		
+		if($minutes > $timebrake){
+			$timebrakecalc = $minutes - $timebrake;
+			echo 'Vous avez depasé le temps de pause de '.$timebrakecalc.' minutes.';
+			echo '<br>';
+			echo '<br>';
+		}
+		if($minutes < $timebrake){
+			$timebrakecalc_ = $timebrake - $minutes;
+			echo 'Il vous reste '.$timebrakecalc_.' minutes de pause.';
+			echo '<br>';
+			echo '<br>';
+		}
+	    if($current_time <= $dateendstrtotime && $current_time >= $datestartstrtotime){
 		    if($endpush[0] == 'sortie'){
 		    	echo '<br>';
 		    	$endpushcalc = $current_time - $endpush[1];
-		    	echo 'Le nombre de temps qui vous avez passé en pause.';
-		    	echo '<br>';
-                	$seconds = $endpushcalc;
-		        $hours = floor($seconds / 3600);
-		        $minutes = floor(($seconds / 60) % 60);
-		        $secs = $seconds % 60;
-		        echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
-		    	echo '<br>';
+		    	if($endpushcalc <= 12600 && $endpushcalc >= -12600){
+			    	echo 'Le nombre de temps qui vous avez passé en pause.';
+			    	echo '<br>';
+	                	$seconds = $endpushcalc;
+			        $hours = floor($seconds / 3600);
+			        $minutes = floor(($seconds / 60) % 60);
+			        $secs = $seconds % 60;
+			        echo sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
+			    	echo '<br>';
+			    	echo '<br>';
+		    	}
 		    }
 	    }
 	    
