@@ -755,10 +755,12 @@ if ($_GET['dayoff'] == 'true') {
 		echo '<option value="">Sélectionner un employé</option>';
 			foreach($my_employees as $employee){
 				$user_by_id = get_user_by('id', $employee);
-				if($employee_replace == $employee){
-					echo '<option value="'.$employee.'" selected>'. $user_by_id->user_nicename .' - ' . $user_by_id->user_firstname . ' ' . $user_by_id->user_lastname . '</option>';
-				} else {
-					echo '<option value="'.$employee.'">'. $user_by_id->user_nicename .' - ' . $user_by_id->user_firstname . ' ' . $user_by_id->user_lastname . '</option>';
+				if(get_current_user_id() != $employee){
+					if($employee_replace == $employee){
+						echo '<option value="'.$employee.'" selected>'. $user_by_id->user_nicename .' - ' . $user_by_id->user_firstname . ' ' . $user_by_id->user_lastname . '</option>';
+					} else {
+						echo '<option value="'.$employee.'">'. $user_by_id->user_nicename .' - ' . $user_by_id->user_firstname . ' ' . $user_by_id->user_lastname . '</option>';
+					}
 				}
 			}
 		echo '</select>';
@@ -989,14 +991,16 @@ if ($_GET['edit'] == 'true') {
 	    	if($push[0] == 'entrer'){
 			$date = date('m/d/Y', $push[1]);
 			$time = date('H:i:s', $push[1]);
-	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="' . $date . '"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'">';
+			$user_obj = get_user_by('id', $push[2]);
+	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="' . $date . '"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'"> - ' . $user_obj->user_nicename;
 	    		$datetimes[$y] = $push[1];
 	        	echo '<br>';
 	    	}
 	    	if($push[0] == 'sortie'){
 			$date = date('m/d/Y', $push[1]);
 			$time = date('H:i:s', $push[1]);
-	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="'. $date .'"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'">';
+			$user_obj = get_user_by('id', $push[2]);
+	    		echo $push[0] . ' - <input type="text" id="punchdateinout-'.$i.'" class="punchdateinout" name="punchdateinout-'.$i.'" data-toggle="punchdateinout-'.$i.'" value="'. $date .'"> - <input type="time" id="punchtimeinout-'.$i.'" class="punchtimeinout" name="punchtimeinout-'.$i.'" value="'. $time .'"> - ' . $user_obj->user_nicename;
 	    		$datetimes[$y] = $push[1];
 	    		echo '<br>';
 	    	}
@@ -1193,6 +1197,12 @@ if ($_GET['edit'] == 'true') {
 			    	echo '<br>';
 		    	}
 		    }
+	    }
+	    
+	    $dayoff_status = get_post_meta( get_the_ID(), 'dayoff_status_key', true );
+	    $employee_replace = get_post_meta( get_the_ID(), 'employee_replace_key', true );
+	    if($employee_replace != '' && $dayoff_status == 3){
+	    	$employee_horaire = $employee_replace;
 	    }
 	    
     	echo '<br>';
