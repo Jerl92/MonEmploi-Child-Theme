@@ -91,12 +91,12 @@ if (implode($params) == ''){
 	    $salaire = get_post_meta( get_the_ID(), 'salaire_key', true );
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
-	    
-	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
+	    	    
+	    echo '<span>ID - '.get_the_ID().'</span>';
 	    
 	    echo '<br>';
 	    
-	    echo '<span>ID - '.get_the_ID().'</span>';
+	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
@@ -536,9 +536,11 @@ if ($_GET['dayoff'] == 'true') {
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
 	    
-	    echo '<p>UUID - '.get_the_title(get_the_ID()).'</p>';
+	    echo '<span>ID - '.get_the_ID().'</span>';
 	    
-	    echo '<p>ID - '.get_the_ID().'</p>';
+	    echo '<br>';
+	    
+	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
@@ -838,11 +840,11 @@ if ($_GET['edit'] == 'true') {
 	    
 	    echo '<h2>'.get_the_title($job_horaire).'</h2>';
 	    
-	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
+	    echo '<span>ID - '.get_the_ID().'</span>';
 	    
 	    echo '<br>';
 	    
-	    echo '<span>ID - '.get_the_ID().'</span>';
+	    echo '<span>UUID - '.get_the_title(get_the_ID()).'</span>';
 	    
 	    echo '<h4>Employeur</h4>';
 	    $get_author_by_id = get_user_by('ID', $get_author_id);
