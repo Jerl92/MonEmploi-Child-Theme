@@ -106,42 +106,7 @@
 			<?php 
 			echo '<h3><span class="">'. __('Adresse du poste', 'monemploi') .'</span></h3>';
 		
-			echo '<span id="job-adress">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';
-			echo ' - '; 
-			$usermetadata = get_user_meta($author_id);
-			$field_data = $usermetadata['Code_postal']; 
-					 
-			echo '<span class="autocompleteDeparture">';
-				echo '<span class="autocompleteDeparture_0" style="display: none;">'. implode($field_data) . '</span>';
-				echo '<span class="autocompleteArrival_0" style="display: none;">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';
-				echo '<span class="distance_0"></span>'; 
-			echo '</span>';					
-		?></div><?php
-		
-		?><div class="entry-meta" style="padding-bottom: 15px;"><?php
-		
-			echo '<h3><span class="">'. __('Itineraire', 'monemploi') .'</span></h3>';
-		
-			echo '<span id="user-adress" style="display: none;">' . get_user_meta($author_id, 'adresse_key', true) . ' ' . get_user_meta($author_id, 'postal_code_key', true) . '</span>';
-			$travelMode = $_GET['travelMode'];
-			echo '<br>';
-			echo '<button><a href="?travelMode=voiture">Voiture</a></button>';
-			echo '<button><a href="?travelMode=autobus">Autobus</a></button>';
-            if($travelMode == 'autobus') {
-                echo '<div class="departuredate" style="display: none;">' . date("Y-m-d") . '</div>';
-				echo '<input type="time" class="departuretime">';
-			}
-			if($travelMode == null) {
-				echo '<span>Voiture</span>';
-			}
-			if($travelMode == 'voiture') {
-				echo '<span>Voiture</span>';
-			}
-			if($travelMode == 'autobus') {
-				echo '<span>Autobus</span>';
-			}
-			echo '<br>';
-			echo '<div id="map" style="width: 100%; height: 520px;"></div>';
+			echo '<span id="job-adress">' . get_post_meta( get_post_meta(get_the_ID(), 'my_postid_key', true), 'my_code_postal_key', true ) . '</span>';				
 		?></div><?php
 		
 		echo '<div class="entry-meta" style="padding-bottom: 15px;">';

@@ -179,8 +179,8 @@ if (implode($params) == ''){
 	    if($employee_replace != '' && $dayoff_status == 3){
 		    echo '<h4>Remplacent</h4>';
 		    $get_employee_replace_by_id = get_user_by('ID', $employee_replace);
-		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_key', true);
-		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_key', true);
+		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_replace_key', true);
+		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_replace_key', true);
 		    
 		    echo $get_employee_replace_by_id->user_nicename;
 		    echo ' - ';
@@ -621,8 +621,8 @@ if ($_GET['dayoff'] == 'true') {
 	    if($employee_replace != '' && $dayoff_status == 3){
 		    echo '<h4>Remplacent</h4>';
 		    $get_employee_replace_by_id = get_user_by('ID', $employee_replace);
-		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_key', true);
-		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_key', true);
+		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_replace_key', true);
+		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_replace_key', true);
 		    
 		    echo $get_employee_replace_by_id->user_nicename;
 		    echo ' - ';
@@ -925,8 +925,8 @@ if ($_GET['edit'] == 'true') {
 	    if($employee_replace != '' && $dayoff_status == 3){
 		    echo '<h4>Remplacent</h4>';
 		    $get_employee_replace_by_id = get_user_by('ID', $employee_replace);
-		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_key', true);
-		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_key', true);
+		    $hide_adresse = get_user_meta( $employee_replace, 'hide_adresse_replace_key', true);
+		    $hide_contact = get_user_meta( $employee_replace, 'hide_contact_replace_key', true);
 		    
 		    echo $get_employee_replace_by_id->user_nicename;
 		    echo ' - ';
