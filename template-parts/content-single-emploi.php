@@ -498,8 +498,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 					?>
 				
 				</div><?php
+				
 				if($allready_candidacy == 0){
+							
 					echo'<div class="entry-meta-job-question-wrapper">';
+					
+						echo '<h3>Questions de l&#8216;employeur</h3>';
+					
+						$text_questions = get_post_meta( get_the_ID(), 'text_question_key', true);
+						$questions = get_post_meta( get_the_ID(), 'question_key', true);
+						
+						foreach ( $text_questions as $key => $value ) {
+						
+							echo '<span class="text-question">'.$value.'</span>';
+							echo '<br>';
+							if($questions[$key] == 'text') {
+								echo '<input type="text" id="employeur-question" class="employeur-question" name="employeur-question" style="width: 100%;">';
+							}
+							if($questions[$key] == 'textarea') {
+								echo '<textarea id="employeur-question" class="employeur-question" rows="5" cols="40" name="employeur-question" placeholder="Écrivez votre réponse ici..."></textarea>';
+							}
+							if($questions[$key] == 'number') {
+								echo '<input type="number" id="employeur-question" class="employeur-question" name="employeur-question">';
+							}
+							echo '<br>';
+							echo '<br>';
+						
+						}
 					
 						echo '<h3>Questions liées à la candidature</h3>';
 						
@@ -511,8 +536,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						echo '</select>';
 						
 						echo '<br />';
-						
-						echo '<div class="test1"></div>';
 						
 						echo '<div class="superieur-info" style="display: none;">';
 							echo '<p style="font-weight: 600;">Si oui, entrer les informations de votre supérieur</p>';
@@ -539,25 +562,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 						$attachments = get_posts( $args );
 					    
                         			echo '<h3>Vos documents</h3>';
-						if ( $attachments ) {
-						    
-						    foreach ( $attachments as $attachment ) {
-						        // Get the URL of the media file
-						        $file_url = wp_get_attachment_url( $attachment->ID );
-						        // Get the title
-						        $file_title = apply_filters( 'the_title', $attachment->post_title );
-						
-						        echo '<div>';
-						        
-						        	echo '<input type="checkbox" id="cv" name="cv" class="cv" value="' . $attachment->ID . '">';
-						        	echo ' - ';
-						        	echo '<a href="' . esc_url( $file_url ) . '">' . esc_html( $file_title ) . '</a>';
-						        
-						        echo '</div>';
-						    }
-						} else {
-						    echo '<p>Vous devez avoir un document ou plus dans votre section curiculum vital</p>';
-						}
+	                        		echo '<div class="cv-documents-wrapper">';
+							if ( $attachments ) {
+							    
+							    foreach ( $attachments as $attachment ) {
+							        // Get the URL of the media file
+							        $file_url = wp_get_attachment_url( $attachment->ID );
+							        // Get the title
+							        $file_title = apply_filters( 'the_title', $attachment->post_title );
+							
+							        echo '<div>';
+							        
+							        	echo '<input type="checkbox" id="cv" name="cv" class="cv" value="' . $attachment->ID . '">';
+							        	echo ' - ';
+							        	echo '<a href="' . esc_url( $file_url ) . '">' . esc_html( $file_title ) . '</a>';
+							        
+							        echo '</div>';
+							    }
+							} else {
+							    echo '<p>Vous devez avoir un document ou plus dans votre section curiculum vital</p>';
+							}
+						echo '</div>';
 						
 						echo '<h3>Votre lettre de présentation</h3>';
 						echo '<textarea id="lettre_reference" name="lettre_presentation" class="lettre_presentation" rows="5" cols="30">';

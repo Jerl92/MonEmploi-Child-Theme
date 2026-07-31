@@ -256,6 +256,28 @@
 		
 		echo '<div style="width: 100%; style="padding-bottom: 15px;">';
 		
+			echo '<h3><span class="">'. __('Questions de l&#8216;employeur', 'monemploi') .'</span></h3>';
+		
+			$text_employeur_question = get_post_meta( get_the_ID(), 'my_text_employeur_question_key', true );
+			
+			$employeur_question = get_post_meta( get_the_ID(), 'my_employeur_question_key', true );
+			
+			$i = 0;
+			foreach ( $text_employeur_question as $key => $value ) {
+			
+				echo $value;
+				echo '<br>';
+				echo $employeur_question[$i];
+				echo '<br>';
+				echo '<br>';
+				$i++;
+			
+			}
+		
+		echo '</div>';
+		
+		echo '<div style="width: 100%; style="padding-bottom: 15px;">';
+		
 			echo '<h3><span class="">'. __('Lettre de presentation', 'monemploi') .'</span></h3>';
 			
 			$my_lettre_presentation = get_post_meta( get_the_ID(), 'my_lettre_presentation_key', true );
