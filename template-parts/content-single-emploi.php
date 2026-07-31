@@ -151,14 +151,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			
 				<?php echo get_post_meta( get_the_ID(), 'my_code_postal_key', true ); ?>
 				
-				<?php $usermetadata = get_user_meta(get_current_user_id());
-				$field_data = $usermetadata['Code_postal']; 
-				 
-				echo '<span class="autocompleteDeparture">';
-					echo '<span class="autocompleteDeparture_0" style="display: none;">'. implode($field_data) . '</span>';
-					echo '<span class="autocompleteArrival_0" style="display: none;">' . get_post_meta(get_the_ID() , 'my_code_postal_key', true ) . '</span>';
-					echo ' - <span class="distance_0"></span>'; 
-				echo '</span>';
+				<?php 
 				
 				echo '<br>';
 				
@@ -482,14 +475,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				
 					<?php echo get_post_meta( get_the_ID(), 'my_code_postal_key', true ); ?>
 					
-					<?php $usermetadata = get_user_meta(get_current_user_id());
-					$field_data = $usermetadata['Code_postal']; 
-					 
-					echo '<span class="autocompleteDeparture">';
-						echo '<span class="autocompleteDeparture_0" style="display: none;">'. implode($field_data) . '</span>';
-						echo '<span class="autocompleteArrival_0" style="display: none;">' . get_post_meta(get_the_ID() , 'my_code_postal_key', true ) . '</span>';
-						echo ' - <span class="distance_0"></span>'; 
-					echo '</span>';
+					<?php
 					
 					echo '<br>';
 					
